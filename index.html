@@ -25,7 +25,7 @@
     </div>
   </header>
 
-  <!-- HERO & DOPPIO FILTRO -->
+  <!-- HERO & FILTRI -->
   <section class="bg-slate-900 text-white py-10 px-4 shadow-inner">
     <div class="max-w-4xl mx-auto text-center space-y-4">
       <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight">Cosa stai cercando in Provincia?</h2>
@@ -36,6 +36,35 @@
           <label class="block text-xs text-slate-400 mb-1 font-semibold uppercase">1. Seleziona Comune</label>
           <select id="select-comune" onchange="caricaRisorse()" class="w-full p-3 rounded-lg border border-slate-700 bg-slate-800 text-white shadow-sm focus:ring-2 focus:ring-blue-500 outline-none">
             <option value="">Tutti i Comuni</option>
+            <option value="Avetrana">Avetrana</option>
+            <option value="Carosino">Carosino</option>
+            <option value="Castellaneta">Castellaneta</option>
+            <option value="Crispiano">Crispiano</option>
+            <option value="Faggiano">Faggiano</option>
+            <option value="Fragagnano">Fragagnano</option>
+            <option value="Ginosa">Ginosa</option>
+            <option value="Grottaglie">Grottaglie</option>
+            <option value="Laterza">Laterza</option>
+            <option value="Leporano">Leporano</option>
+            <option value="Lizzano">Lizzano</option>
+            <option value="Manduria">Manduria</option>
+            <option value="Martina Franca">Martina Franca</option>
+            <option value="Maruggio">Maruggio</option>
+            <option value="Massafra">Massafra</option>
+            <option value="Monteiasi">Monteiasi</option>
+            <option value="Montemesola">Montemesola</option>
+            <option value="Monteparano">Monteparano</option>
+            <option value="Mottola">Mottola</option>
+            <option value="Palagianello">Palagianello</option>
+            <option value="Palagiano">Palagiano</option>
+            <option value="Pulsano">Pulsano</option>
+            <option value="Roccaforzata">Roccaforzata</option>
+            <option value="San Giorgio Ionico">San Giorgio Ionico</option>
+            <option value="San Marzano di San Giuseppe">San Marzano di San Giuseppe</option>
+            <option value="Sava">Sava</option>
+            <option value="Statte">Statte</option>
+            <option value="Taranto">Taranto</option>
+            <option value="Torricella">Torricella</option>
           </select>
         </div>
 
@@ -69,39 +98,33 @@
   <script>
     const SUPABASE_URL = 'https://jqlkeaomrkvafdaxusvm.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpxbGtlYW9tcmt2YWZkYXh1c3ZtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcxMzc5NDUsImV4cCI6MjEwMjcxMzk0NX0.l0t0Kta0W8NVJfJ7Pltwi_cAxUWNvb8eTsz66Q0Q90w';
-    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    let comuniMappa = {};
+    let supabaseClient;
 
     document.addEventListener('DOMContentLoaded', async () => {
-      await caricaComuni();
+      supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
       await caricaRisorse();
     });
 
-    async function caricaComuni() {
-      const { data: comuni } = await supabaseClient.from('comuni').select('*').order('nome');
-      const selectComune = document.getElementById('select-comune');
-      if (comuni && comuni.length > 0) {
-        selectComune.innerHTML = '<option value="">Tutti i Comuni</option>';
-        comuni.forEach(c => {
-          comuniMappa[c.id] = c.nome;
-          selectComune.innerHTML += `<option value="${c.id}">${c.nome}</option>`;
-        });
-      }
-    }
-
     async function caricaRisorse() {
       const risultatiDiv = document.getElementById('risultati');
-      const comuneId = document.getElementById('select-comune').value;
+      const comune = document.getElementById('select-comune').value;
       const categoria = document.getElementById('select-categoria').value;
 
       let query = supabaseClient.from('risorse_locali').select('*');
-      if (comuneId && comuneId !== "") query = query.eq('comune_id', Number(comuneId));
-      if (categoria && categoria !== "") query = query.eq('categoria', categoria);
+
+      if (comune) query = query.eq('comune', comune);
+      if (categoria) query = query.eq('categoria', categoria);
 
       const { data: risorse, error } = await query;
 
-      if (error || !risorse || risorse.length === 0) {
+      if (error) {
+        console.error('Errore Supabase:', error);
+        risultatiDiv.innerHTML = `<p class="text-center text-red-500 col-span-full py-12">Errore nel caricamento: ${error.message}</p>`;
+        return;
+      }
+
+      if (!risorse || risorse.length === 0) {
         risultatiDiv.innerHTML = `<p class="text-center text-slate-500 col-span-full py-12">Nessun servizio trovato con i filtri selezionati.</p>`;
         return;
       }
@@ -111,7 +134,7 @@
           <div>
             <div class="flex items-center justify-between gap-2 mb-2">
               <span class="text-xs font-semibold px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 uppercase tracking-wider">${r.categoria}</span>
-              <span class="text-xs text-slate-400 font-medium"><i class="fa-solid fa-city mr-1"></i>${comuniMappa[r.comune_id] || ''}</span>
+              <span class="text-xs text-slate-400 font-medium"><i class="fa-solid fa-city mr-1"></i>${r.comune}</span>
             </div>
             <h3 class="text-lg font-bold text-slate-800 mt-1">${r.nome}</h3>
             <p class="text-sm text-slate-600 mt-2"><i class="fa-solid fa-location-dot text-slate-400 mr-1.5"></i>${r.indirizzo || 'Indirizzo non specificato'}</p>
