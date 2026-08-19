@@ -66,80 +66,51 @@
   <!-- SCRIPT SUPABASE -->
   <script>
     const SUPABASE_URL = 'https://jqlkeaomrkvafdaxusvm.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpxbGtlYW9tcmt2YWZkYXh1c3ZtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcxMzc5NDUsImV4cCI6MjEwMjcxMzk0NX0.l0t0Kta0W8NVJfJ7Pltwi_cAxUWNvb8eTsz66Q0Q90w'; // Sostituisci se necessario
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpxbGtlYW9tcmt2YWZkYXh1c3ZtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDEyODUzODQsImV4cCI6MjA1Njg2MTM4NH0.1N0BWB3X-f5fU-Uu_P_G_Xv0X3W_S_1';
     const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     document.addEventListener('DOMContentLoaded', async () => {
-      // Inserisci la tua publishable key se la costante sopra fosse un segnaposto
       await caricaRegioni();
       await caricaRisorse();
     });
 
+    async function caricaRegioni() {
+      const { data: regioni } = await supabaseClient.from('regioni').select('*').order('nome');
+      const selectRegione = document.getElementById('select-regione');
+      if (regioni && regioni.length > 0) {
+        selectRegione.innerHTML = '<option value="">Tutte le Regioni</option>';
+        regioni.forEach(r => {
+          selectRegione.innerHTML += `<option value="${r.id}">${r.nome}</option>`;
+        });
+      }
+    }
+
     async function gestisciCambioRegione() {
-  const regioneId = document.getElementById('select-regione').value;
-  const selectProvincia = document.getElementById('select-provincia');
-  const selectComune = document.getElementById('select-comune');
+      const regioneId = document.getElementById('select-regione').value;
+      const selectProvincia = document.getElementById('select-provincia');
+      const selectComune = document.getElementById('select-comune');
 
-  selectProvincia.innerHTML = '<option value="">Tutte le Province</option>';
-  selectComune.innerHTML = '<option value="">Tutti i Comuni</option>';
-  selectComune.disabled = true;
+      selectProvincia.innerHTML = '<option value="">Tutte le Province</option>';
+      selectComune.innerHTML = '<option value="">Tutti i Comuni</option>';
+      selectComune.disabled = true;
 
-  if (!regioneId) {
-    selectProvincia.disabled = true;
-    caricaRisorse();
-    return;
-  }
+      if (!regioneId) {
+        selectProvincia.disabled = true;
+        caricaRisorse();
+        return;
+      }
 
-  // Carica le province collegate
-  const { data: province, error } = await supabaseClient
-    .from('province')
-    .select('*')
-    .eq('regione_id', regioneId)
-    .order('nome');
-
-  if (province && province.length > 0) {
-    province.forEach(p => {
-      selectProvincia.innerHTML += `<option value="${p.id}">${p.nome}</option>`;
-    });
-    selectProvincia.disabled = false;
-  } else {
-    selectProvincia.disabled = true;
-  }
-  caricaRisorse();
-}
-
-async function gestisciCambioProvincia() {
-  const provinciaId = document.getElementById('select-provincia').value;
-  const selectComune = document.getElementById('select-comune');
-
-  selectComune.innerHTML = '<option value="">Tutti i Comuni</option>';
-
-  if (!provinciaId) {
-    selectComune.disabled = true;
-    caricaRisorse();
-    return;
-  }
-
-  // Abilitiamo il menu per permettere la selezione
-  selectComune.disabled = false;
-
-  // Carica i comuni collegati alla provincia selezionata
-  const { data: comuni, error } = await supabaseClient
-    .from('comuni')
-    .select('*')
-    .eq('provincia_id', provinciaId)
-    .order('nome');
-
-  if (comuni && comuni.length > 0) {
-    comuni.forEach(c => {
-      selectComune.innerHTML += `<option value="${c.id}">${c.nome}</option>`;
-    });
-  } else {
-    // Se non ci sono comuni specifici nel DB per questa provincia, mostra un avviso
-    selectComune.innerHTML += '<option value="" disabled>Nessun comune inserito per questa provincia</option>';
-  }
-  caricaRisorse();
-}
+      const { data: province } = await supabaseClient.from('province').select('*').eq('regione_id', regioneId).order('nome');
+      if (province && province.length > 0) {
+        province.forEach(p => {
+          selectProvincia.innerHTML += `<option value="${p.id}">${p.nome}</option>`;
+        });
+        selectProvincia.disabled = false;
+      } else {
+        selectProvincia.disabled = true;
+      }
+      caricaRisorse();
+    }
 
     async function gestisciCambioProvincia() {
       const provinciaId = document.getElementById('select-provincia').value;
@@ -154,13 +125,12 @@ async function gestisciCambioProvincia() {
       }
 
       const { data: comuni } = await supabaseClient.from('comuni').select('*').eq('provincia_id', provinciaId).order('nome');
+      
+      selectComune.disabled = false;
       if (comuni && comuni.length > 0) {
         comuni.forEach(c => {
           selectComune.innerHTML += `<option value="${c.id}">${c.nome}</option>`;
         });
-        selectComune.disabled = false;
-      } else {
-        selectComune.disabled = true;
       }
       caricaRisorse();
     }
