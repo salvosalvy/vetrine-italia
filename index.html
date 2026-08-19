@@ -3,263 +3,138 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vetrine Italia - La Vetrina Digitale della tua Città</title>
-    <!-- Tailwind CSS -->
+    <title>Portale Servizi Territoriali d'Italia</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome per le Icone -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Supabase Client -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col">
 
     <!-- HEADER -->
-    <header class="bg-gradient-to-r from-blue-700 via-blue-600 to-indigo-700 text-white shadow-lg sticky top-0 z-40">
+    <header class="bg-slate-900 text-white shadow-md sticky top-0 z-40 border-b border-slate-800">
         <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center gap-3 cursor-pointer" onclick="resetFiltri()">
-                <div class="bg-white text-blue-600 p-2.5 rounded-xl shadow-md font-black text-xl flex items-center justify-center w-10 h-10">
-                    <i class="fa-solid fa-store"></i>
+                <div class="bg-blue-600 text-white p-2.5 rounded-xl shadow-md font-black text-xl flex items-center justify-center w-10 h-10">
+                    <i class="fa-solid fa-landmark"></i>
                 </div>
                 <div>
-                    <h1 class="text-xl font-extrabold tracking-tight leading-none">Vetrine<span class="text-blue-200">Italia</span></h1>
-                    <p class="text-[10px] text-blue-200 font-medium tracking-wider uppercase">Piattaforma Locale</p>
+                    <h1 class="text-xl font-extrabold tracking-tight leading-none">Italia<span class="text-blue-400">Servizi</span></h1>
+                    <p class="text-[10px] text-slate-400 font-medium tracking-wider uppercase">Portale Nazionale Utilità</p>
                 </div>
             </div>
-            <span class="text-xs bg-white/10 backdrop-blur-md px-3 py-1.5 rounded-full text-blue-100 font-medium border border-white/20 shadow-inner">
-                📍 Puglia (TA)
-            </span>
         </div>
     </header>
 
-    <!-- HERO SECTION -->
-    <section class="bg-gradient-to-r from-blue-700 via-blue-600 to-indigo-700 text-white pb-14 pt-8 px-4">
-        <div class="max-w-3xl mx-auto text-center">
-            <h2 class="text-3xl sm:text-4xl font-black mb-3 tracking-tight">Scopri le migliori attività vicine a te</h2>
-            <p class="text-blue-100 text-sm sm:text-base mb-8 max-w-xl mx-auto">Negozi, ristoranti, servizi artigianali e offerte esclusive nella tua città.</p>
+    <!-- HERO / RICERCA -->
+    <section class="bg-slate-900 text-white pb-12 pt-8 px-4 border-b border-slate-800">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-2xl sm:text-4xl font-black mb-3">Trova Servizi, Emergenze e Luoghi di Culto</h2>
+            <p class="text-slate-400 text-xs sm:text-sm mb-6">Seleziona la regione e il comune per filtrare le informazioni del tuo territorio.</p>
             
-            <!-- Barra di Ricerca -->
-            <div class="bg-white p-2.5 sm:p-3 rounded-2xl shadow-2xl flex flex-col sm:flex-row gap-2.5 text-slate-800">
-                <div class="relative sm:w-1/3">
-                    <i class="fa-solid fa-location-dot absolute left-3.5 top-3.5 text-slate-400"></i>
-                    <select id="select-comune" onchange="caricaAttivita()" class="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-700 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none">
-                        <option value="">Tutti i Comuni</option>
-                    </select>
-                </div>
-                <div class="relative flex-1">
-                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-slate-400"></i>
-                    <input type="text" id="input-cerca" onkeyup="filtraggioIstantaneo()" placeholder="Cerca attività o servizio..." class="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-                </div>
-                <button onclick="caricaAttivita()" class="bg-blue-600 hover:bg-blue-700 active:scale-95 text-white font-bold px-6 py-2.5 rounded-xl shadow-md transition-all flex items-center justify-center gap-2">
-                    <span>Cerca</span>
-                </button>
+            <div class="bg-white p-3 rounded-2xl shadow-xl flex flex-col sm:flex-row gap-2.5 text-slate-800">
+                <!-- Seleziona Regione -->
+                <select id="select-regione" onchange="caricaComuni()" class="sm:w-1/3 px-3 py-2.5 bg-slate-100 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold focus:outline-none">
+                    <option value="">Tutte le Regioni</option>
+                </select>
+
+                <!-- Seleziona Comune -->
+                <select id="select-comune" onchange="caricaDati()" class="sm:w-1/3 px-3 py-2.5 bg-slate-100 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold focus:outline-none">
+                    <option value="">Tutti i Comuni</option>
+                </select>
+
+                <!-- Cerca Testo -->
+                <input type="text" id="input-cerca" onkeyup="filtraggioIstantaneo()" placeholder="Cerca ufficio, numero, luogo..." class="flex-1 px-3 py-2.5 bg-slate-100 border border-slate-200 rounded-xl text-xs sm:text-sm focus:outline-none">
             </div>
         </div>
     </section>
 
-    <!-- MAIN CONTENT -->
+    <!-- CATEGORIE -->
     <main class="max-w-6xl mx-auto px-4 py-8 flex-1 w-full">
-        <!-- Categorie -->
-        <div class="flex justify-between items-center mb-4">
-            <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
-                <i class="fa-solid fa-layer-group text-blue-600"></i> Categorie
-            </h3>
-            <button onclick="resetFiltri()" id="btn-reset" class="hidden text-xs text-blue-600 hover:underline font-semibold">Mostra Tutte</button>
-        </div>
-        <div id="lista-categorie" class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-10">
-            <!-- Dynamic Categories -->
-        </div>
-
-        <!-- Elenco Attività -->
-        <div class="flex justify-between items-center mb-4">
-            <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
-                <i class="fa-solid fa-store text-blue-600"></i> Attività in Evidenza
-            </h3>
-            <span id="conteggio-attivita" class="text-xs font-semibold text-slate-500 bg-slate-200 px-2.5 py-1 rounded-full">0 trovate</span>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+            <div onclick="filtraTipo('servizio')" class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm hover:border-blue-500 cursor-pointer flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-lg"><i class="fa-solid fa-gear"></i></div>
+                <div><h4 class="font-bold text-sm">Servizi Pubblici</h4><p class="text-[11px] text-slate-500">Anagrafe, Tributi, ASL</p></div>
+            </div>
+            <div onclick="filtraTipo('emergenza')" class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm hover:border-red-500 cursor-pointer flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-red-50 text-red-600 flex items-center justify-center text-lg"><i class="fa-solid fa-phone-flip"></i></div>
+                <div><h4 class="font-bold text-sm">Emergenze</h4><p class="text-[11px] text-slate-500">112, 118, 115, Guardia Medica</p></div>
+            </div>
+            <div onclick="filtraTipo('culto')" class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm hover:border-emerald-500 cursor-pointer flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-lg"><i class="fa-solid fa-church"></i></div>
+                <div><h4 class="font-bold text-sm">Luoghi di Culto</h4><p class="text-[11px] text-slate-500">Chiese, Moschee, Sinagoghe</p></div>
+            </div>
         </div>
 
-        <div id="lista-attivita" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Dynamic Business Cards -->
+        <!-- ELENCO RISULTATI -->
+        <div id="lista-risultati" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <!-- Dati caricati qui -->
         </div>
     </main>
 
-    <!-- MODAL DETTAGLIO ATTIVITÀ -->
-    <div id="modal-dettaglio" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden transform transition-all">
-            <!-- Modal Header -->
-            <div class="bg-gradient-to-r from-blue-600 to-indigo-600 p-6 text-white relative">
-                <button onclick="chiudiModal()" class="absolute top-4 right-4 text-white/80 hover:text-white bg-black/20 hover:bg-black/40 w-8 h-8 rounded-full flex items-center justify-center transition">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-                <span id="modal-categoria" class="text-[11px] font-bold uppercase tracking-wider bg-white/20 px-2.5 py-1 rounded-full text-blue-100"></span>
-                <h3 id="modal-nome" class="text-2xl font-black mt-2"></h3>
-                <p id="modal-indirizzo" class="text-sm text-blue-100 mt-1 flex items-center gap-1.5"></p>
-            </div>
-            <!-- Modal Body -->
-            <div class="p-6 space-y-4">
-                <div>
-                    <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Descrizione</h4>
-                    <p id="modal-descrizione" class="text-slate-700 text-sm leading-relaxed"></p>
-                </div>
-            </div>
-            <!-- Modal Actions -->
-            <div class="p-4 bg-slate-50 border-t border-slate-100 grid grid-cols-2 gap-3">
-                <a id="btn-telefono" href="#" class="flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-900 text-white font-bold py-3 px-4 rounded-xl text-sm transition">
-                    <i class="fa-solid fa-phone"></i> Chiama
-                </a>
-                <a id="btn-whatsapp" href="#" target="_blank" class="flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-xl text-sm transition">
-                    <i class="fa-brands fa-whatsapp text-lg"></i> WhatsApp
-                </a>
-            </div>
-        </div>
-    </div>
-
-    <!-- FOOTER -->
-    <footer class="bg-slate-900 text-slate-400 py-8 text-center text-xs border-t border-slate-800">
-        <p>&copy; 2026 Vetrine Italia. Tutti i diritti riservati.</p>
-    </footer>
-
-    <!-- SCRIPT SUPABASE & UI LOGIC -->
     <script>
         const SUPABASE_URL = 'https://jqlkeaomrkvafdaxusvm.supabase.co';
         const SUPABASE_KEY = 'sb_publishable_rFL-uC8WIlGwfgAOzmyPiA_n_aLNOl-';
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        let tutteAttivita = [];
-        let categoriaSelezionata = null;
-
-        const iconeCategorie = {
-            'Ristorazione': 'fa-utensils',
-            'Bar e Pasticcerie': 'fa-mug-hot',
-            'Servizi e Bellezza': 'fa-scissors',
-            'Tempo Libero ed Eventi': 'fa-ticket'
-        };
+        let tuttiDati = [];
 
         async function initApp() {
-            await caricaComuni();
-            await caricaCategorie();
-            await caricaAttivita();
+            await caricaRegioni();
+            await caricaDati();
+        }
+
+        async function caricaRegioni() {
+            const { data } = await _supabase.from('regioni').select('*').order('nome');
+            const select = document.getElementById('select-regione');
+            if (data) data.forEach(r => select.innerHTML += `<option value="${r.id}">${r.nome}</option>`);
         }
 
         async function caricaComuni() {
-            const { data: comuni } = await _supabase.from('comuni').select('*').order('nome');
+            const regioneId = document.getElementById('select-regione').value;
             const select = document.getElementById('select-comune');
-            if (comuni) {
-                comuni.forEach(c => {
-                    select.innerHTML += `<option value="${c.id}">${c.nome}</option>`;
-                });
-            }
-        }
-
-        async function caricaCategorie() {
-            const { data: categorie } = await _supabase.from('categorie').select('*');
-            const container = document.getElementById('lista-categorie');
-            if (categorie) {
-                container.innerHTML = categorie.map(cat => {
-                    const icona = iconeCategorie[cat.nome] || 'fa-tag';
-                    return `
-                        <div onclick="filtraPerCategoria(${cat.id})" id="cat-btn-${cat.id}" class="cat-card p-3.5 bg-white rounded-xl shadow-sm hover:shadow-md border border-slate-200/80 hover:border-blue-500 transition-all cursor-pointer text-center group">
-                            <div class="w-10 h-10 mx-auto mb-2 rounded-lg bg-blue-50 text-blue-600 group-hover:bg-blue-600 group-hover:text-white flex items-center justify-center transition-all">
-                                <i class="fa-solid ${icona} text-lg"></i>
-                            </div>
-                            <span class="text-xs font-bold text-slate-700 group-hover:text-blue-600 block leading-tight">${cat.nome}</span>
-                        </div>
-                    `;
-                }).join('');
-            }
-        }
-
-        async function caricaAttivita() {
-            const comuneId = document.getElementById('select-comune').value;
-            let query = _supabase.from('attivita').select('*, comuni(nome), categorie(nome)');
+            select.innerHTML = '<option value="">Tutti i Comuni</option>';
             
+            let query = _supabase.from('comuni').select('*').order('nome');
+            if (regioneId) query = query.eq('regione_id', regioneId);
+
+            const { data } = await query;
+            if (data) data.forEach(c => select.innerHTML += `<option value="${c.id}">${c.nome}</option>`);
+            caricaDati();
+        }
+
+        async function caricaDati() {
+            const comuneId = document.getElementById('select-comune').value;
+            let query = _supabase.from('risorse_locali').select('*, comuni(nome)');
             if (comuneId) query = query.eq('comune_id', comuneId);
 
-            const { data, error } = await query;
-            if (error) return console.error(error);
-
-            tutteAttivita = data || [];
-            mostraAttivita(tutteAttivita);
+            const { data } = await query;
+            tuttiDati = data || [];
+            mostraDati(tuttiDati);
         }
 
-        function mostraAttivita(lista) {
-            const container = document.getElementById('lista-attivita');
-            document.getElementById('conteggio-attivita').textContent = `${lista.length} trovate`;
-
+        function mostraDati(lista) {
+            const container = document.getElementById('lista-risultati');
             if (lista.length === 0) {
-                container.innerHTML = `<div class="col-span-full text-center py-12 bg-white rounded-2xl border border-slate-200 p-6">
-                    <i class="fa-solid fa-store-slash text-4xl text-slate-300 mb-3"></i>
-                    <p class="text-slate-500 font-medium">Nessuna attività trovata per i filtri selezionati.</p>
-                </div>`;
+                container.innerHTML = '<p class="col-span-full text-center text-slate-400 py-8">Nessun dato trovato per la selezione corrente.</p>';
                 return;
             }
-
-            container.innerHTML = lista.map(a => `
-                <div class="bg-white rounded-2xl shadow-sm hover:shadow-xl border border-slate-200/80 overflow-hidden transition-all duration-300 flex flex-col justify-between group">
-                    <div class="p-5">
-                        <div class="flex justify-between items-start gap-2 mb-3">
-                            <h4 class="text-lg font-bold text-slate-900 group-hover:text-blue-600 transition-colors">${a.nome}</h4>
-                            <span class="text-[10px] font-extrabold uppercase tracking-wider bg-blue-50 text-blue-700 px-2.5 py-1 rounded-full shrink-0">
-                                ${a.categorie?.nome || 'Generico'}
-                            </span>
-                        </div>
-                        <p class="text-xs text-slate-500 mb-3 flex items-center gap-1.5 font-medium">
-                            <i class="fa-solid fa-location-dot text-slate-400"></i> ${a.indirizzo} - <span class="text-slate-700 font-semibold">${a.comuni?.nome || ''}</span>
-                        </p>
-                        <p class="text-xs text-slate-600 line-clamp-2 leading-relaxed mb-4">${a.descrizione || 'Nessuna descrizione.'}</p>
-                    </div>
-
-                    <div class="px-5 py-3.5 bg-slate-50/80 border-t border-slate-100 flex items-center justify-between">
-                        <span class="text-[11px] font-bold flex items-center gap-1 ${a.stato_claim === 'verified' ? 'text-emerald-600' : 'text-amber-600'}">
-                            <i class="fa-solid ${a.stato_claim === 'verified' ? 'fa-circle-check' : 'fa-circle-info'}"></i>
-                            ${a.stato_claim === 'verified' ? 'Verificata' : 'Non rivendicata'}
-                        </span>
-                        <button onclick='apriModal(${JSON.stringify(a).replace(/'/g, "&apos;")})' class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-3.5 py-2 rounded-xl shadow-sm transition active:scale-95 flex items-center gap-1">
-                            Vedi Dettagli <i class="fa-solid fa-chevron-right text-[10px]"></i>
-                        </button>
-                    </div>
+            container.innerHTML = lista.map(d => `
+                <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+                    <span class="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded bg-slate-100 text-slate-600">${d.tipo}</span>
+                    <h4 class="font-bold text-base mt-2">${d.nome}</h4>
+                    <p class="text-xs text-slate-500 mt-1"><i class="fa-solid fa-location-dot"></i> ${d.indirizzo || 'Indirizzo non specificato'} (${d.comuni?.nome || ''})</p>
+                    ${d.telefono ? `<a href="tel:${d.telefono}" class="mt-3 inline-block bg-slate-900 text-white text-xs font-bold px-3 py-1.5 rounded-lg"><i class="fa-solid fa-phone"></i> ${d.telefono}</a>` : ''}
                 </div>
             `).join('');
         }
 
         function filtraggioIstantaneo() {
             const testo = document.getElementById('input-cerca').value.toLowerCase();
-            let filtrate = tutteAttivita.filter(a => 
-                a.nome.toLowerCase().includes(testo) || 
-                (a.descrizione && a.descrizione.toLowerCase().includes(testo))
-            );
-            if (categoriaSelezionata) {
-                filtrate = filtrate.filter(a => a.categoria_id === categoriaSelezionata);
-            }
-            mostraAttivita(filtrate);
+            mostraDati(tuttiDati.filter(d => d.nome.toLowerCase().includes(testo)));
         }
 
-        function filtraPerCategoria(catId) {
-            categoriaSelezionata = catId;
-            document.getElementById('btn-reset').classList.remove('hidden');
-            filtraggioIstantaneo();
-        }
-
-        function resetFiltri() {
-            categoriaSelezionata = null;
-            document.getElementById('input-cerca').value = '';
-            document.getElementById('btn-reset').classList.add('hidden');
-            mostraAttivita(tutteAttivita);
-        }
-
-        function apriModal(a) {
-            document.getElementById('modal-nome').textContent = a.nome;
-            document.getElementById('modal-categoria').textContent = a.categorie?.nome || 'Attività';
-            document.getElementById('modal-indirizzo').innerHTML = `<i class="fa-solid fa-location-dot"></i> ${a.indirizzo} - ${a.comuni?.nome || ''}`;
-            document.getElementById('modal-descrizione').textContent = a.descrizione || 'Nessuna descrizione inserita.';
-            
-            document.getElementById('btn-telefono').href = `tel:${a.telefono || ''}`;
-            document.getElementById('btn-whatsapp').href = `https://wa.me/39${a.whatsapp || a.telefono || ''}`;
-
-            document.getElementById('modal-dettaglio').classList.remove('hidden');
-        }
-
-        function chiudiModal() {
-            document.getElementById('modal-dettaglio').classList.add('hidden');
+        function filtraTipo(tipo) {
+            mostraDati(tuttiDati.filter(d => d.tipo === tipo));
         }
 
         window.addEventListener('DOMContentLoaded', initApp);
