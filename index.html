@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Portale Servizi Territoriali d'Italia</title>
+  <title>TarantoServizi - Portale Utilità Territoriale</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -18,45 +18,47 @@
           <i class="fa-solid fa-landmark"></i>
         </div>
         <div>
-          <h1 class="text-xl font-bold tracking-tight leading-none">ItaliaServizi</h1>
-          <p class="text-xs text-slate-400 mt-0.5 font-medium">PORTALE NAZIONALE UTILITÀ</p>
+          <h1 class="text-xl font-bold tracking-tight leading-none">TarantoServizi</h1>
+          <p class="text-xs text-slate-400 mt-0.5 font-medium">PROVINCIA DI TARANTO</p>
         </div>
       </div>
     </div>
   </header>
 
-  <!-- HERO & FILTRI CASCATA -->
-  <section class="bg-slate-900 text-white py-12 px-4 shadow-inner">
+  <!-- HERO & DOPPIO FILTRO -->
+  <section class="bg-slate-900 text-white py-10 px-4 shadow-inner">
     <div class="max-w-4xl mx-auto text-center space-y-4">
-      <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight">Trova Servizi, Emergenze e Luoghi di Culto</h2>
-      <p class="text-slate-400 text-sm md:text-base">Seleziona regione, provincia e comune per filtrare le informazioni del tuo territorio.</p>
+      <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight">Cosa stai cercando in Provincia?</h2>
+      <p class="text-slate-400 text-sm md:text-base">Filtra per Comune e Categoria per trovare rapidamente quello di cui hai bisogno.</p>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-3 pt-4 text-left">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 max-w-2xl mx-auto text-left">
         <div>
-          <label class="block text-xs text-slate-400 mb-1 font-semibold uppercase">1. Regione</label>
-          <select id="select-regione" onchange="gestisciCambioRegione()" class="w-full p-3 rounded-lg border border-slate-700 bg-slate-800 text-white shadow-sm focus:ring-2 focus:ring-blue-500 outline-none">
-            <option value="">Tutte le Regioni</option>
-          </select>
-        </div>
-
-        <div>
-          <label class="block text-xs text-slate-400 mb-1 font-semibold uppercase">2. Provincia</label>
-          <select id="select-provincia" onchange="gestisciCambioProvincia()" disabled class="w-full p-3 rounded-lg border border-slate-700 bg-slate-800 text-white shadow-sm focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed outline-none">
-            <option value="">Tutte le Province</option>
-          </select>
-        </div>
-
-        <div>
-          <label class="block text-xs text-slate-400 mb-1 font-semibold uppercase">3. Comune</label>
-          <select id="select-comune" onchange="caricaRisorse()" disabled class="w-full p-3 rounded-lg border border-slate-700 bg-slate-800 text-white shadow-sm focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed outline-none">
+          <label class="block text-xs text-slate-400 mb-1 font-semibold uppercase">1. Seleziona Comune</label>
+          <select id="select-comune" onchange="caricaRisorse()" class="w-full p-3 rounded-lg border border-slate-700 bg-slate-800 text-white shadow-sm focus:ring-2 focus:ring-blue-500 outline-none">
             <option value="">Tutti i Comuni</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs text-slate-400 mb-1 font-semibold uppercase">2. Seleziona Categoria</label>
+          <select id="select-categoria" onchange="caricaRisorse()" class="w-full p-3 rounded-lg border border-slate-700 bg-slate-800 text-white shadow-sm focus:ring-2 focus:ring-blue-500 outline-none">
+            <option value="">Tutte le Categorie</option>
+            <option value="Pronto Intervento">🚨 Pronto Intervento</option>
+            <option value="Servizi">🏛️ Servizi</option>
+            <option value="Luoghi di Culto">⛪ Luoghi di Culto</option>
+            <option value="Mangiare">🍽️ Mangiare</option>
+            <option value="Sport">⚽ Sport</option>
+            <option value="Shopping">🛍️ Shopping</option>
+            <option value="Teatri">🎭 Teatri</option>
+            <option value="Cinema">🎬 Cinema</option>
+            <option value="Dance">🪩 Dance</option>
           </select>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- CONTENUTO PRINCIPALE -->
+  <!-- RISULTATI -->
   <main class="max-w-6xl mx-auto px-4 py-8 flex-grow w-full">
     <div id="risultati" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       <p class="text-center text-slate-500 col-span-full py-12">Caricamento in corso...</p>
@@ -66,95 +68,52 @@
   <!-- SCRIPT SUPABASE -->
   <script>
     const SUPABASE_URL = 'https://jqlkeaomrkvafdaxusvm.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpxbGtlYW9tcmt2YWZkYXh1c3ZtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDEyODUzODQsImV4cCI6MjA1Njg2MTM4NH0.1N0BWB3X-f5fU-Uu_P_G_Xv0X3W_S_1';
-const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpxbGtlYW9tcmt2YWZkYXh1c3ZtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDEyODUzODQsImV4cCI6MjA1Njg2MTM4NH0.1N0BWB3X-f5fU-Uu_P_G_Xv0X3W_S_1';
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     document.addEventListener('DOMContentLoaded', async () => {
-      await caricaRegioni();
+      await caricaComuni();
       await caricaRisorse();
     });
 
-    async function caricaRegioni() {
-      const { data: regioni } = await supabaseClient.from('regioni').select('*').order('nome');
-      const selectRegione = document.getElementById('select-regione');
-      if (regioni && regioni.length > 0) {
-        selectRegione.innerHTML = '<option value="">Tutte le Regioni</option>';
-        regioni.forEach(r => {
-          selectRegione.innerHTML += `<option value="${r.id}">${r.nome}</option>`;
-        });
-      }
-    }
-
-    async function gestisciCambioRegione() {
-      const regioneId = document.getElementById('select-regione').value;
-      const selectProvincia = document.getElementById('select-provincia');
+    async function caricaComuni() {
+      const { data: comuni } = await supabaseClient.from('comuni').select('*').order('nome');
       const selectComune = document.getElementById('select-comune');
-
-      selectProvincia.innerHTML = '<option value="">Tutte le Province</option>';
-      selectComune.innerHTML = '<option value="">Tutti i Comuni</option>';
-      selectComune.disabled = true;
-
-      if (!regioneId) {
-        selectProvincia.disabled = true;
-        caricaRisorse();
-        return;
-      }
-
-      const { data: province } = await supabaseClient.from('province').select('*').eq('regione_id', regioneId).order('nome');
-      if (province && province.length > 0) {
-        province.forEach(p => {
-          selectProvincia.innerHTML += `<option value="${p.id}">${p.nome}</option>`;
-        });
-        selectProvincia.disabled = false;
-      } else {
-        selectProvincia.disabled = true;
-      }
-      caricaRisorse();
-    }
-
-    async function gestisciCambioProvincia() {
-      const provinciaId = document.getElementById('select-provincia').value;
-      const selectComune = document.getElementById('select-comune');
-
-      selectComune.innerHTML = '<option value="">Tutti i Comuni</option>';
-
-      if (!provinciaId) {
-        selectComune.disabled = true;
-        caricaRisorse();
-        return;
-      }
-
-      const { data: comuni } = await supabaseClient.from('comuni').select('*').eq('provincia_id', provinciaId).order('nome');
-      
-      selectComune.disabled = false;
       if (comuni && comuni.length > 0) {
+        selectComune.innerHTML = '<option value="">Tutti i Comuni</option>';
         comuni.forEach(c => {
           selectComune.innerHTML += `<option value="${c.id}">${c.nome}</option>`;
         });
       }
-      caricaRisorse();
     }
 
     async function caricaRisorse() {
       const risultatiDiv = document.getElementById('risultati');
       const comuneId = document.getElementById('select-comune').value;
+      const categoria = document.getElementById('select-categoria').value;
 
-      let query = supabaseClient.from('risorse_locali').select('*');
+      let query = supabaseClient.from('risorse_locali').select('*, comuni(nome)');
       if (comuneId) query = query.eq('comune_id', comuneId);
+      if (categoria) query = query.eq('categoria', categoria);
 
       const { data: risorse, error } = await query;
 
       if (error || !risorse || risorse.length === 0) {
-        risultatiDiv.innerHTML = `<p class="text-center text-slate-500 col-span-full py-12">Nessun servizio trovato per la selezione corrente.</p>`;
+        risultatiDiv.innerHTML = `<p class="text-center text-slate-500 col-span-full py-12">Nessun servizio trovato con i filtri selezionati.</p>`;
         return;
       }
 
       risultatiDiv.innerHTML = risorse.map(r => `
-        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 hover:shadow-md transition">
-          <span class="text-xs font-semibold px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 uppercase tracking-wider">${r.tipo || 'Servizio'}</span>
-          <h3 class="text-lg font-bold text-slate-800 mt-3">${r.nome}</h3>
-          <p class="text-sm text-slate-600 mt-1"><i class="fa-solid fa-location-dot text-slate-400 mr-1.5"></i>${r.indirizzo || 'Indirizzo non presente'}</p>
-          ${r.telefono ? `<p class="text-sm text-slate-600 mt-1"><i class="fa-solid fa-phone text-slate-400 mr-1.5"></i>${r.telefono}</p>` : ''}
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 hover:shadow-md transition flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between gap-2 mb-2">
+              <span class="text-xs font-semibold px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 uppercase tracking-wider">${r.categoria}</span>
+              <span class="text-xs text-slate-400 font-medium"><i class="fa-solid fa-city mr-1"></i>${r.comuni ? r.comuni.nome : ''}</span>
+            </div>
+            <h3 class="text-lg font-bold text-slate-800 mt-1">${r.nome}</h3>
+            <p class="text-sm text-slate-600 mt-2"><i class="fa-solid fa-location-dot text-slate-400 mr-1.5"></i>${r.indirizzo || 'Indirizzo non specificato'}</p>
+          </div>
+          ${r.telefono ? `<p class="text-sm text-slate-600 mt-3 pt-3 border-t border-slate-100"><i class="fa-solid fa-phone text-slate-400 mr-1.5"></i>${r.telefono}</p>` : ''}
         </div>
       `).join('');
     }
