@@ -71,6 +71,8 @@
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpxbGtlYW9tcmt2YWZkYXh1c3ZtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDEyODUzODQsImV4cCI6MjA1Njg2MTM4NH0.1N0BWB3X-f5fU-Uu_P_G_Xv0X3W_S_1';
     const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+    let comuniMappa = {};
+
     document.addEventListener('DOMContentLoaded', async () => {
       await caricaComuni();
       await caricaRisorse();
@@ -82,6 +84,7 @@
       if (comuni && comuni.length > 0) {
         selectComune.innerHTML = '<option value="">Tutti i Comuni</option>';
         comuni.forEach(c => {
+          comuniMappa[c.id] = c.nome;
           selectComune.innerHTML += `<option value="${c.id}">${c.nome}</option>`;
         });
       }
@@ -92,9 +95,9 @@
       const comuneId = document.getElementById('select-comune').value;
       const categoria = document.getElementById('select-categoria').value;
 
-      let query = supabaseClient.from('risorse_locali').select('*, comuni(nome)');
-      if (comuneId) query = query.eq('comune_id', comuneId);
-      if (categoria) query = query.eq('categoria', categoria);
+      let query = supabaseClient.from('risorse_locali').select('*');
+      if (comuneId && comuneId !== "") query = query.eq('comune_id', Number(comuneId));
+      if (categoria && categoria !== "") query = query.eq('categoria', categoria);
 
       const { data: risorse, error } = await query;
 
@@ -108,7 +111,7 @@
           <div>
             <div class="flex items-center justify-between gap-2 mb-2">
               <span class="text-xs font-semibold px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 uppercase tracking-wider">${r.categoria}</span>
-              <span class="text-xs text-slate-400 font-medium"><i class="fa-solid fa-city mr-1"></i>${r.comuni ? r.comuni.nome : ''}</span>
+              <span class="text-xs text-slate-400 font-medium"><i class="fa-solid fa-city mr-1"></i>${comuniMappa[r.comune_id] || ''}</span>
             </div>
             <h3 class="text-lg font-bold text-slate-800 mt-1">${r.nome}</h3>
             <p class="text-sm text-slate-600 mt-2"><i class="fa-solid fa-location-dot text-slate-400 mr-1.5"></i>${r.indirizzo || 'Indirizzo non specificato'}</p>
