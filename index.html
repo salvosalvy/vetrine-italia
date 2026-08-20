@@ -90,7 +90,7 @@
   <!-- RISULTATI -->
   <main class="max-w-6xl mx-auto px-4 py-8 flex-grow w-full">
     <div id="risultati" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <p class="text-center text-slate-500 col-span-full py-12">Caricamento in corso...</p>
+      <p class="text-center text-slate-500 col-span-full py-12">Seleziona un Comune o una Categoria per visualizzare i servizi.</p>
     </div>
   </main>
 
@@ -111,10 +111,19 @@
       const comune = document.getElementById('select-comune').value;
       const categoria = document.getElementById('select-categoria').value;
 
+      // 1. BLOCCO SE NON C'È ALCUNA SELEZIONE: Lascia lo schermo pulito
+      if (!comune && !categoria) {
+        risultatiDiv.innerHTML = `<p class="text-center text-slate-500 col-span-full py-12">Seleziona un Comune o una Categoria per visualizzare i servizi.</p>`;
+        return;
+      }
+
+      // 2. CHIAMATA A SUPABASE CON ORDINAMENTO ALFABETICO
       let query = supabaseClient.from('risorse_locali').select('*');
 
       if (comune) query = query.eq('comune', comune);
       if (categoria) query = query.eq('categoria', categoria);
+
+      query = query.order('comune', { ascending: true }).order('nome', { ascending: true });
 
       const { data: risorse, error } = await query;
 
