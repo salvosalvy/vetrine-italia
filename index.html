@@ -29,7 +29,7 @@
   <section class="bg-slate-900 text-white py-10 px-4 shadow-inner">
     <div class="max-w-4xl mx-auto text-center space-y-4">
       <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight">Cosa stai cercando in Provincia?</h2>
-      <p class="text-slate-400 text-sm md:text-base">Filtra per Comune e Categoria per trovare rapidamente quello di cui hai bisogno.</p>
+      <p class="text-slate-400 text-sm md:text-base">Seleziona sia il Comune che la Categoria per visualizzare i servizi relativi.</p>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 max-w-2xl mx-auto text-left">
         
@@ -37,7 +37,7 @@
         <div>
           <label class="block text-xs text-slate-400 mb-1 font-semibold uppercase">1. Seleziona Comune</label>
           <select id="select-comune" onchange="caricaRisorse()" class="w-full p-3 rounded-lg border border-slate-700 bg-slate-800 text-white shadow-sm focus:ring-2 focus:ring-blue-500 outline-none">
-            <option value="">Tutti i Comuni</option>
+            <option value="">-- Scegli un Comune --</option>
             <option value="Avetrana">Avetrana</option>
             <option value="Carosino">Carosino</option>
             <option value="Castellaneta">Castellaneta</option>
@@ -70,39 +70,27 @@
           </select>
         </div>
 
-        <!-- 2. SELEZIONA CATEGORIA (In ordine di importanza/urgenza) -->
+        <!-- 2. SELEZIONA CATEGORIA -->
         <div>
           <label class="block text-xs text-slate-400 mb-1 font-semibold uppercase">2. Seleziona Categoria</label>
           <select id="select-categoria" onchange="caricaRisorse()" class="w-full p-3 rounded-lg border border-slate-700 bg-slate-800 text-white shadow-sm focus:ring-2 focus:ring-blue-500 outline-none">
-            <option value="">Tutte le Categorie</option>
-
-            <!-- 1. SALUTE ED EMERGENZA -->
+            <option value="">-- Scegli una Categoria --</option>
             <option value="Pronto Intervento">🚨 Pronto Intervento</option>
             <option value="Farmacie">💊 Farmacie</option>
             <option value="Servizi Sanitari">🏥 Servizi Sanitari</option>
             <option value="Medici Specialisti">🩺 Medici Specialisti</option>
-
-            <!-- 2. SERVIZI AMMINISTRATIVI E FINANZIARI -->
             <option value="Servizi">🏛️ Servizi ed Enti Pubblici</option>
             <option value="Uffici Postali">🏣 Uffici Postali</option>
             <option value="Banche">🏦 Banche</option>
             <option value="Servizio Spedizioni">📦 Servizio Spedizioni</option>
-
-            <!-- 3. MOBILITÀ, VETERINARIA ED UTILITÀ -->
             <option value="Auto e Meccanici">🚗 Auto e Meccanici</option>
             <option value="Veterinari">🩺 Veterinari</option>
             <option value="Animali e Pet Care">🐾 Animali e Pet Care</option>
-
-            <!-- 4. ACCOGLIENZA E RISTORAZIONE -->
             <option value="Mangiare">🍽️ Mangiare</option>
             <option value="Hotel e B&B">🏨 Hotel e B&B</option>
             <option value="Servizi Catering">🍱 Servizi Catering</option>
-
-            <!-- 5. COMMERCIO E SERVIZI ALLA PERSONA -->
             <option value="Shopping">🛍️ Shopping</option>
             <option value="Onoranze Funebri">🕊️ Onoranze Funebri</option>
-
-            <!-- 6. SVAGO, CULTURA E LUOGHI DI CULTO -->
             <option value="Sport">⚽ Sport</option>
             <option value="Luoghi di Culto">⛪ Luoghi di Culto</option>
             <option value="Teatri">🎭 Teatri</option>
@@ -118,7 +106,7 @@
   <!-- RISULTATI -->
   <main class="max-w-6xl mx-auto px-4 py-8 flex-grow w-full">
     <div id="risultati" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <p class="text-center text-slate-500 col-span-full py-12">Seleziona un Comune o una Categoria per visualizzare i servizi.</p>
+      <p class="text-center text-slate-500 col-span-full py-12">Seleziona sia un <strong>Comune</strong> che una <strong>Categoria</strong> per visualizzare i servizi.</p>
     </div>
   </main>
 
@@ -139,21 +127,19 @@
       const comune = document.getElementById('select-comune').value;
       const categoria = document.getElementById('select-categoria').value;
 
-      // 1. Schermo pulito se non è selezionato alcun filtro
-      if (!comune && !categoria) {
-        risultatiDiv.innerHTML = `<p class="text-center text-slate-500 col-span-full py-12">Seleziona un Comune o una Categoria per visualizzare i servizi.</p>`;
+      // RIGIDO: Se manca il Comune OPPURE la Categoria, blocca la ricerca e chiedi di selezionarli entrambi
+      if (!comune || !categoria) {
+        risultatiDiv.innerHTML = `<p class="text-center text-slate-500 col-span-full py-12">Seleziona sia un <strong>Comune</strong> che una <strong>Categoria</strong> per visualizzare i servizi.</p>`;
         return;
       }
 
-      // 2. Chiamata a Supabase
-      let query = supabaseClient.from('risorse_locali').select('*');
-
-      if (comune) query = query.eq('comune', comune);
-      if (categoria) query = query.eq('categoria', categoria);
-
-      query = query.order('comune', { ascending: true }).order('nome', { ascending: true });
-
-      const { data: risorse, error } = await query;
+      // Chiamata a Supabase
+      const { data: risorse, error } = await supabaseClient
+        .from('risorse_locali')
+        .select('*')
+        .eq('comune', comune)
+        .eq('categoria', categoria)
+        .order('nome', { ascending: true });
 
       if (error) {
         console.error('Errore Supabase:', error);
@@ -161,20 +147,12 @@
         return;
       }
 
-      // 3. FILTRO RIGIDO: Se non è selezionata esplicitamente la categoria "Luoghi di Culto", le chiese non compaiono
-      let risorseFiltrate = risorse || [];
-      if (!categoria) {
-        risorseFiltrate = risorseFiltrate.filter(r => 
-          !r.categoria || !r.categoria.toLowerCase().includes('culto')
-        );
-      }
-
-      if (risorseFiltrate.length === 0) {
-        risultatiDiv.innerHTML = `<p class="text-center text-slate-500 col-span-full py-12">Nessun servizio trovato con i filtri selezionati.</p>`;
+      if (!risorse || risorse.length === 0) {
+        risultatiDiv.innerHTML = `<p class="text-center text-slate-500 col-span-full py-12">Nessun servizio trovato per <strong>${comune}</strong> nella categoria <strong>${categoria}</strong>.</p>`;
         return;
       }
 
-      risultatiDiv.innerHTML = risorseFiltrate.map(r => `
+      risultatiDiv.innerHTML = risorse.map(r => `
         <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 hover:shadow-md transition flex flex-col justify-between">
           <div>
             <div class="flex items-center justify-between gap-2 mb-2">
