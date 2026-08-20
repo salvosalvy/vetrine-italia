@@ -51,54 +51,54 @@
   <!-- CONTENITORE PRINCIPALE A 2 COLONNE -->
   <div class="max-w-7xl mx-auto px-4 py-6 flex-grow w-full grid grid-cols-1 lg:grid-cols-12 gap-6">
 
-    <!-- COLONNA SINISTRA: PANNELLO FILTRI CON SFONDO DIVERSIFICATO -->
+    <!-- COLONNA SINISTRA: PANNELLO FILTRI CON SFONDO SCURO ELEGANTE -->
     <aside class="lg:col-span-4 xl:col-span-3 space-y-4">
-      <div class="bg-gradient-to-b from-slate-100 via-cyan-50/50 to-indigo-50/40 p-4 rounded-2xl border border-slate-300/80 shadow-xl shadow-slate-200/60 space-y-5 sticky top-20 backdrop-blur-sm">
+      <div class="bg-gradient-to-b from-slate-900 via-slate-800 to-indigo-950 p-4 rounded-2xl border border-slate-700/80 shadow-2xl space-y-5 sticky top-20 text-slate-100">
         
         <!-- HEADER PANNELLO -->
-        <div class="flex items-center justify-between pb-2 border-b border-slate-200/80">
-          <span class="text-xs font-black uppercase tracking-wider text-slate-800 flex items-center gap-2">
-            <i class="fa-solid fa-sliders text-cyan-600"></i> Filtra Ricerca
+        <div class="flex items-center justify-between pb-2 border-b border-slate-700/80">
+          <span class="text-xs font-black uppercase tracking-wider text-white flex items-center gap-2">
+            <i class="fa-solid fa-sliders text-cyan-400"></i> Filtra Ricerca
           </span>
-          <span id="badge-totale-filtri" class="text-[10px] font-bold bg-white text-cyan-700 px-2 py-0.5 rounded-full border border-cyan-300/80 shadow-xs">0 attivi</span>
+          <span id="badge-totale-filtri" class="text-[10px] font-bold bg-slate-800 text-cyan-300 px-2 py-0.5 rounded-full border border-cyan-500/30 shadow-xs">0 attivi</span>
         </div>
 
         <!-- 1. SELEZIONE COMUNI -->
         <div>
           <div class="flex items-center justify-between mb-1.5">
-            <label class="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
+            <label class="text-xs font-bold uppercase tracking-wider text-slate-200 flex items-center gap-1.5">
               <span>📍</span> 1. Comuni
             </label>
             <div class="space-x-1.5">
-              <button onclick="selezionaTuttiComuni()" class="text-[10px] font-bold text-cyan-700 hover:text-cyan-900">Tutti</button>
-              <span class="text-slate-300">|</span>
-              <button onclick="deselezionaTuttiComuni()" class="text-[10px] font-bold text-slate-400 hover:text-slate-600">Azzera</button>
+              <button onclick="selezionaTuttiComuni()" class="text-[10px] font-bold text-cyan-400 hover:text-cyan-300 transition">Tutti</button>
+              <span class="text-slate-600">|</span>
+              <button onclick="deselezionaTuttiComuni()" class="text-[10px] font-bold text-slate-400 hover:text-slate-300 transition">Azzera</button>
             </div>
           </div>
 
           <!-- DROPDOWN COMUNI -->
           <div class="relative">
-            <details class="group bg-white rounded-xl border border-slate-300 text-xs shadow-xs">
-              <summary class="p-2.5 font-semibold text-slate-700 cursor-pointer flex justify-between items-center select-none hover:bg-slate-50 rounded-xl transition">
+            <details class="group bg-slate-800/90 rounded-xl border border-slate-700 text-xs shadow-inner">
+              <summary class="p-2.5 font-semibold text-slate-200 cursor-pointer flex justify-between items-center select-none hover:bg-slate-700/80 rounded-xl transition">
                 <span id="label-comuni-selezionati" class="truncate pr-2">Scegli uno o più comuni...</span>
-                <i class="fa-solid fa-chevron-down text-cyan-600 group-open:rotate-180 transition transform"></i>
+                <i class="fa-solid fa-chevron-down text-cyan-400 group-open:rotate-180 transition transform"></i>
               </summary>
-              <div id="container-comuni" class="p-2 border-t border-slate-200 max-h-52 overflow-y-auto space-y-0.5 bg-white rounded-b-xl">
+              <div id="container-comuni" class="p-2 border-t border-slate-700 max-h-52 overflow-y-auto space-y-0.5 bg-slate-800 rounded-b-xl">
                 <!-- Generato da JS -->
               </div>
             </details>
           </div>
         </div>
 
-        <hr class="border-slate-200/80">
+        <hr class="border-slate-700/80">
 
         <!-- 2. SELEZIONE CATEGORIE -->
         <div>
           <div class="flex items-center justify-between mb-2">
-            <label class="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
+            <label class="text-xs font-bold uppercase tracking-wider text-slate-200 flex items-center gap-1.5">
               <span>🏷️</span> 2. Categorie
             </label>
-            <button onclick="deselezionaTutteCategorie()" class="text-[10px] font-bold text-slate-400 hover:text-slate-600">Azzera</button>
+            <button onclick="deselezionaTutteCategorie()" class="text-[10px] font-bold text-slate-400 hover:text-slate-300 transition">Azzera</button>
           </div>
 
           <div id="container-gruppi-categorie" class="space-y-3.5">
@@ -107,9 +107,9 @@
         </div>
 
         <!-- FOOTER RIEPILOGO FILTRI -->
-        <div class="pt-3 border-t border-slate-200/80 text-[11px] font-medium text-slate-600 flex justify-between items-center bg-white/80 p-2.5 rounded-xl border border-slate-200/80 shadow-xs">
-          <span id="contatore-comuni" class="text-cyan-800 font-bold">0 comuni</span>
-          <span id="contatore-categorie" class="text-cyan-800 font-bold">0 categorie</span>
+        <div class="pt-3 border-t border-slate-700/80 text-[11px] font-medium text-slate-300 flex justify-between items-center bg-slate-800/60 p-2.5 rounded-xl border border-slate-700/60 shadow-xs">
+          <span id="contatore-comuni" class="text-cyan-300 font-bold">0 comuni</span>
+          <span id="contatore-categorie" class="text-cyan-300 font-bold">0 categorie</span>
         </div>
 
       </div>
@@ -186,7 +186,7 @@
     const MACRO_GRUPPI = [
       {
         titolo: "🚨 EMERGENZE & SALUTE",
-        badgeColor: "text-red-800 bg-red-100/90 border-red-200",
+        badgeColor: "text-red-200 bg-red-950/70 border-red-800/80",
         categorie: [
           { nome: "Pronto intervento", icona: "🚨" },
           { nome: "Farmacie", icona: "💊" },
@@ -197,7 +197,7 @@
       },
       {
         titolo: "🍽️ MANGIARE & RISTORAZIONE",
-        badgeColor: "text-amber-800 bg-amber-100/90 border-amber-200",
+        badgeColor: "text-amber-200 bg-amber-950/70 border-amber-800/80",
         categorie: [
           { nome: "Mangiare", icona: "🍽️" },
           { nome: "Servizi Catering", icona: "🍱" }
@@ -205,7 +205,7 @@
       },
       {
         titolo: "🍿 DIVERTIMENTO & SVAGO",
-        badgeColor: "text-purple-800 bg-purple-100/90 border-purple-200",
+        badgeColor: "text-purple-200 bg-purple-950/70 border-purple-800/80",
         categorie: [
           { nome: "Cinema", icona: "🎬" },
           { nome: "Teatri", icona: "🎭" },
@@ -217,7 +217,7 @@
       },
       {
         titolo: "🏛️ SERVIZI & UTILITÀ",
-        badgeColor: "text-blue-800 bg-blue-100/90 border-blue-200",
+        badgeColor: "text-blue-200 bg-blue-950/70 border-blue-800/80",
         categorie: [
           { nome: "Servizi", icona: "🏛️" },
           { nome: "Uffici Postali", icona: "🏣" },
@@ -229,7 +229,7 @@
       },
       {
         titolo: "⛪ ALTRI SERVIZI",
-        badgeColor: "text-slate-800 bg-slate-200/90 border-slate-300",
+        badgeColor: "text-slate-200 bg-slate-800/90 border-slate-600/80",
         categorie: [
           { nome: "Luoghi di Culto", icona: "⛪" },
           { nome: "Onoranze Funebri", icona: "🕊️" }
@@ -288,8 +288,8 @@
       container.innerHTML = COMUNI_LISTA.map(comune => {
         const isChecked = comuniSelezionati.has(comune);
         return `
-          <label class="flex items-center gap-2 px-2.5 py-1.5 rounded-lg hover:bg-slate-100 cursor-pointer text-xs font-medium text-slate-700 transition">
-            <input type="checkbox" ${isChecked ? 'checked' : ''} onchange="toggleComune('${comune}')" class="rounded border-slate-300 text-cyan-600 focus:ring-cyan-500 w-3.5 h-3.5">
+          <label class="flex items-center gap-2 px-2.5 py-1.5 rounded-lg hover:bg-slate-700/80 cursor-pointer text-xs font-medium text-slate-200 transition">
+            <input type="checkbox" ${isChecked ? 'checked' : ''} onchange="toggleComune('${comune}')" class="rounded border-slate-600 bg-slate-700 text-cyan-500 focus:ring-cyan-400 w-3.5 h-3.5">
             <span>${comune}</span>
           </label>
         `;
@@ -311,8 +311,8 @@
         const bottoni = gruppo.categorie.map(cat => {
           const isSelected = categorieSelezionate.has(cat.nome);
           const activeClasses = isSelected 
-            ? 'bg-gradient-to-r from-cyan-600 to-blue-600 text-white border-blue-600 font-bold shadow-md scale-[1.02]' 
-            : 'bg-white text-slate-700 border-slate-200/90 hover:bg-cyan-50 hover:border-cyan-200 shadow-xs';
+            ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white border-cyan-400 font-bold shadow-md scale-[1.02]' 
+            : 'bg-slate-800/80 text-slate-200 border-slate-700 hover:bg-slate-700 hover:border-slate-500 shadow-xs';
           
           return `
             <button onclick="toggleCategoria('${cat.nome}')" class="px-2.5 py-1 rounded-xl text-xs border transition transform flex items-center gap-1.5 text-left ${activeClasses}">
