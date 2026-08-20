@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TarantoServizi - Guida & Utilità Territoriale</title>
+  <title>TarantoServizi - Portale Territoriale</title>
   
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏛️</text></svg>">
   <script src="https://cdn.tailwindcss.com"></script>
@@ -12,42 +12,41 @@
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col selection:bg-cyan-500 selection:text-white">
 
-  <!-- HEADER ELEGANTE -->
+  <!-- HEADER COMPATTO CON BENVENUTO INTEGRATO -->
   <header class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white shadow-lg sticky top-0 z-50 border-b border-cyan-500/20">
-    <div class="max-w-7xl mx-auto px-4 py-3.5 flex justify-between items-center">
-      <div class="flex items-center gap-3 cursor-pointer group" onclick="resetRicerca()">
-        <div class="bg-gradient-to-br from-cyan-400 to-blue-600 text-white p-2.5 rounded-xl shadow-md font-black text-xl flex items-center justify-center w-10 h-10 group-hover:scale-105 transition transform">
+    <div class="max-w-7xl mx-auto px-4 py-2.5 flex flex-wrap items-center justify-between gap-3">
+      
+      <!-- LOGO -->
+      <div class="flex items-center gap-3 cursor-pointer shrink-0" onclick="resetRicerca()">
+        <div class="bg-gradient-to-br from-cyan-400 to-blue-600 text-white p-2 rounded-xl shadow-md font-black text-lg flex items-center justify-center w-9 h-9">
           <i class="fa-solid fa-landmark"></i>
         </div>
         <div>
-          <h1 class="text-xl font-black tracking-tight leading-none bg-gradient-to-r from-white via-slate-100 to-cyan-200 bg-clip-text text-transparent">
+          <h1 class="text-lg font-black tracking-tight leading-none bg-gradient-to-r from-white via-slate-100 to-cyan-200 bg-clip-text text-transparent">
             TarantoServizi
           </h1>
-          <p class="text-[10px] text-cyan-400 font-extrabold tracking-widest mt-0.5 uppercase">Provincia di Taranto</p>
+          <p class="text-[9px] text-cyan-400 font-extrabold tracking-widest uppercase">Provincia di Taranto</p>
         </div>
       </div>
-      
-      <button onclick="resetRicerca()" class="text-xs font-semibold text-slate-300 hover:text-white bg-white/10 hover:bg-white/20 px-3.5 py-1.5 rounded-xl border border-white/10 backdrop-blur-sm transition flex items-center gap-2 shadow-sm">
+
+      <!-- BENVENUTO CENTRATO -->
+      <div class="text-center flex-1 px-2 hidden md:block">
+        <h2 class="text-lg font-black tracking-wide uppercase text-transparent bg-clip-text bg-gradient-to-r from-cyan-200 via-white to-sky-200 leading-tight">
+          BENVENUTO NELLA PROVINCIA DI TARANTO
+        </h2>
+        <p class="text-[11px] text-slate-300 font-medium">
+          Cosa cerchi oggi? Seleziona uno o più <strong class="text-cyan-300">Comuni</strong> e le <strong class="text-cyan-300">Categorie</strong> dal pannello a sinistra.
+        </p>
+      </div>
+
+      <!-- BOTTONE AZZERA -->
+      <button onclick="resetRicerca()" class="text-xs font-semibold text-slate-300 hover:text-white bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-xl border border-white/10 backdrop-blur-sm transition flex items-center gap-1.5 shadow-sm shrink-0">
         <i class="fa-solid fa-rotate-left text-cyan-400"></i>
-        <span class="hidden sm:inline">Azzera Filtri</span>
+        <span>Azzera Filtri</span>
       </button>
+
     </div>
   </header>
-
-  <!-- BENVENUTO / HERO COMPATTO CON SFUMATURA LUMINOSA -->
-  <section class="bg-gradient-to-b from-indigo-950 via-slate-900 to-slate-800 text-white py-6 px-4 shadow-md relative overflow-hidden">
-    <div class="absolute -right-10 -top-10 w-60 h-60 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
-    <div class="absolute -left-10 -bottom-10 w-60 h-60 bg-blue-600/10 rounded-full blur-3xl pointer-events-none"></div>
-
-    <div class="max-w-7xl mx-auto text-center space-y-1.5 relative z-10">
-      <h2 class="text-2xl md:text-3xl font-black tracking-tight uppercase text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-white to-sky-300">
-        BENVENUTO NELLA PROVINCIA DI TARANTO
-      </h2>
-      <p class="text-slate-300 text-xs md:text-sm font-medium max-w-2xl mx-auto">
-        Cosa cerchi oggi? Seleziona uno o più <strong class="text-cyan-300 font-bold">Comuni</strong> e le <strong class="text-cyan-300 font-bold">Categorie</strong> dal pannello a sinistra.
-      </p>
-    </div>
-  </section>
 
   <!-- CONTENITORE PRINCIPALE A 2 COLONNE -->
   <div class="max-w-7xl mx-auto px-4 py-6 flex-grow w-full grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -161,7 +160,7 @@
       <!-- BANNER PUBBLICITARIO INFERIORE -->
       <div class="w-full bg-gradient-to-r from-slate-100 via-slate-200/70 to-slate-100 border-2 border-dashed border-slate-300 rounded-2xl p-6 text-center text-slate-500 shadow-inner">
         <i class="fa-solid fa-rectangle-ad text-slate-400 text-2xl mb-1"></i>
-        <p class="text-xs font-extrabold uppercase tracking-widest text-slate-600">Banner Pubblicitario 728x90 / Spazio Promozionale</p>
+        <p class="text-xs font-extrabold uppercase tracking-widest text-slate-600">BANNER PUBBLICITARIO 728X90 / SPAZIO PROMOZIONALE</p>
       </div>
 
     </main>
