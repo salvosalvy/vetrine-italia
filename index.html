@@ -51,16 +51,16 @@
   <!-- CONTENITORE PRINCIPALE A 2 COLONNE -->
   <div class="max-w-7xl mx-auto px-4 py-6 flex-grow w-full grid grid-cols-1 lg:grid-cols-12 gap-6">
 
-    <!-- COLONNA SINISTRA: PANNELLO FILTRI -->
+    <!-- COLONNA SINISTRA: PANNELLO FILTRI CON SFONDO DIVERSIFICATO -->
     <aside class="lg:col-span-4 xl:col-span-3 space-y-4">
-      <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xl shadow-slate-200/50 space-y-5 sticky top-20">
+      <div class="bg-gradient-to-b from-slate-100 via-cyan-50/50 to-indigo-50/40 p-4 rounded-2xl border border-slate-300/80 shadow-xl shadow-slate-200/60 space-y-5 sticky top-20 backdrop-blur-sm">
         
         <!-- HEADER PANNELLO -->
-        <div class="flex items-center justify-between pb-2 border-b border-slate-100">
+        <div class="flex items-center justify-between pb-2 border-b border-slate-200/80">
           <span class="text-xs font-black uppercase tracking-wider text-slate-800 flex items-center gap-2">
             <i class="fa-solid fa-sliders text-cyan-600"></i> Filtra Ricerca
           </span>
-          <span id="badge-totale-filtri" class="text-[10px] font-bold bg-cyan-50 text-cyan-700 px-2 py-0.5 rounded-full border border-cyan-200/60">0 attivi</span>
+          <span id="badge-totale-filtri" class="text-[10px] font-bold bg-white text-cyan-700 px-2 py-0.5 rounded-full border border-cyan-300/80 shadow-xs">0 attivi</span>
         </div>
 
         <!-- 1. SELEZIONE COMUNI -->
@@ -70,7 +70,7 @@
               <span>📍</span> 1. Comuni
             </label>
             <div class="space-x-1.5">
-              <button onclick="selezionaTuttiComuni()" class="text-[10px] font-bold text-cyan-600 hover:text-cyan-800">Tutti</button>
+              <button onclick="selezionaTuttiComuni()" class="text-[10px] font-bold text-cyan-700 hover:text-cyan-900">Tutti</button>
               <span class="text-slate-300">|</span>
               <button onclick="deselezionaTuttiComuni()" class="text-[10px] font-bold text-slate-400 hover:text-slate-600">Azzera</button>
             </div>
@@ -78,8 +78,8 @@
 
           <!-- DROPDOWN COMUNI -->
           <div class="relative">
-            <details class="group bg-slate-50 rounded-xl border border-slate-300/80 text-xs shadow-inner">
-              <summary class="p-2.5 font-semibold text-slate-700 cursor-pointer flex justify-between items-center select-none hover:bg-slate-100 rounded-xl transition">
+            <details class="group bg-white rounded-xl border border-slate-300 text-xs shadow-xs">
+              <summary class="p-2.5 font-semibold text-slate-700 cursor-pointer flex justify-between items-center select-none hover:bg-slate-50 rounded-xl transition">
                 <span id="label-comuni-selezionati" class="truncate pr-2">Scegli uno o più comuni...</span>
                 <i class="fa-solid fa-chevron-down text-cyan-600 group-open:rotate-180 transition transform"></i>
               </summary>
@@ -90,7 +90,7 @@
           </div>
         </div>
 
-        <hr class="border-slate-100">
+        <hr class="border-slate-200/80">
 
         <!-- 2. SELEZIONE CATEGORIE -->
         <div>
@@ -107,9 +107,9 @@
         </div>
 
         <!-- FOOTER RIEPILOGO FILTRI -->
-        <div class="pt-3 border-t border-slate-100 text-[11px] font-medium text-slate-500 flex justify-between items-center bg-slate-50/50 p-2.5 rounded-xl border border-slate-100">
-          <span id="contatore-comuni" class="text-cyan-700 font-bold">0 comuni</span>
-          <span id="contatore-categorie" class="text-cyan-700 font-bold">0 categorie</span>
+        <div class="pt-3 border-t border-slate-200/80 text-[11px] font-medium text-slate-600 flex justify-between items-center bg-white/80 p-2.5 rounded-xl border border-slate-200/80 shadow-xs">
+          <span id="contatore-comuni" class="text-cyan-800 font-bold">0 comuni</span>
+          <span id="contatore-categorie" class="text-cyan-800 font-bold">0 categorie</span>
         </div>
 
       </div>
@@ -170,7 +170,7 @@
   <!-- SCRIPT SUPABASE E LOGICA -->
   <script>
     const SUPABASE_URL = 'https://jqlkeaomrkvafdaxusvm.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpxbGtlYW9tcmt2YWZkYXh1c3ZtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcxMzc5NDUsImV4cCI6MjEwMjcxMzk0NX0.l0t0Kta0W8NVJfJ7Pltwi_cAxUWNvb8eTsz66Q0Q90w';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpxbGtlYW9tcmt2YWZkYXh1c3ZtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcxMzc5NDUsImV4cCI6IZI0MjcxMzk0NX0.l0t0Kta0W8NVJfJ7Pltwi_cAxUWNvb8eTsz66Q0Q90w';
 
     let supabaseClient;
 
@@ -186,7 +186,7 @@
     const MACRO_GRUPPI = [
       {
         titolo: "🚨 EMERGENZE & SALUTE",
-        badgeColor: "text-red-800 bg-red-100/80 border-red-200",
+        badgeColor: "text-red-800 bg-red-100/90 border-red-200",
         categorie: [
           { nome: "Pronto intervento", icona: "🚨" },
           { nome: "Farmacie", icona: "💊" },
@@ -197,7 +197,7 @@
       },
       {
         titolo: "🍽️ MANGIARE & RISTORAZIONE",
-        badgeColor: "text-amber-800 bg-amber-100/80 border-amber-200",
+        badgeColor: "text-amber-800 bg-amber-100/90 border-amber-200",
         categorie: [
           { nome: "Mangiare", icona: "🍽️" },
           { nome: "Servizi Catering", icona: "🍱" }
@@ -205,7 +205,7 @@
       },
       {
         titolo: "🍿 DIVERTIMENTO & SVAGO",
-        badgeColor: "text-purple-800 bg-purple-100/80 border-purple-200",
+        badgeColor: "text-purple-800 bg-purple-100/90 border-purple-200",
         categorie: [
           { nome: "Cinema", icona: "🎬" },
           { nome: "Teatri", icona: "🎭" },
@@ -217,7 +217,7 @@
       },
       {
         titolo: "🏛️ SERVIZI & UTILITÀ",
-        badgeColor: "text-blue-800 bg-blue-100/80 border-blue-200",
+        badgeColor: "text-blue-800 bg-blue-100/90 border-blue-200",
         categorie: [
           { nome: "Servizi", icona: "🏛️" },
           { nome: "Uffici Postali", icona: "🏣" },
@@ -229,7 +229,7 @@
       },
       {
         titolo: "⛪ ALTRI SERVIZI",
-        badgeColor: "text-slate-800 bg-slate-200/80 border-slate-300",
+        badgeColor: "text-slate-800 bg-slate-200/90 border-slate-300",
         categorie: [
           { nome: "Luoghi di Culto", icona: "⛪" },
           { nome: "Onoranze Funebri", icona: "🕊️" }
@@ -312,7 +312,7 @@
           const isSelected = categorieSelezionate.has(cat.nome);
           const activeClasses = isSelected 
             ? 'bg-gradient-to-r from-cyan-600 to-blue-600 text-white border-blue-600 font-bold shadow-md scale-[1.02]' 
-            : 'bg-slate-100/80 text-slate-700 border-slate-200/80 hover:bg-slate-200/80';
+            : 'bg-white text-slate-700 border-slate-200/90 hover:bg-cyan-50 hover:border-cyan-200 shadow-xs';
           
           return `
             <button onclick="toggleCategoria('${cat.nome}')" class="px-2.5 py-1 rounded-xl text-xs border transition transform flex items-center gap-1.5 text-left ${activeClasses}">
@@ -324,7 +324,7 @@
 
         return `
           <div class="space-y-1.5">
-            <span class="text-[9px] font-black tracking-wider px-2 py-0.5 rounded-md border ${gruppo.badgeColor} uppercase block">
+            <span class="text-[9px] font-black tracking-wider px-2 py-0.5 rounded-md border ${gruppo.badgeColor} uppercase block shadow-xs">
               ${gruppo.titolo}
             </span>
             <div class="flex flex-wrap gap-1">
