@@ -3,41 +3,48 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TarantoServizi - Portale Territoriale</title>
+  <title>TarantoServizi - Guida & Utilità Territoriale</title>
   
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏛️</text></svg>">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
-<body class="bg-slate-100 text-slate-800 font-sans antialiased min-h-screen flex flex-col">
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col selection:bg-cyan-500 selection:text-white">
 
-  <!-- HEADER COMPATTO -->
-  <header class="bg-slate-900 text-white shadow-md sticky top-0 z-50 border-b border-slate-800">
-    <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
-      <div class="flex items-center gap-3 cursor-pointer" onclick="resetRicerca()">
-        <div class="bg-blue-600 text-white p-2 rounded-xl shadow font-black text-lg flex items-center justify-center w-9 h-9">
+  <!-- HEADER ELEGANTE -->
+  <header class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white shadow-lg sticky top-0 z-50 border-b border-cyan-500/20">
+    <div class="max-w-7xl mx-auto px-4 py-3.5 flex justify-between items-center">
+      <div class="flex items-center gap-3 cursor-pointer group" onclick="resetRicerca()">
+        <div class="bg-gradient-to-br from-cyan-400 to-blue-600 text-white p-2.5 rounded-xl shadow-md font-black text-xl flex items-center justify-center w-10 h-10 group-hover:scale-105 transition transform">
           <i class="fa-solid fa-landmark"></i>
         </div>
         <div>
-          <h1 class="text-lg font-bold tracking-tight leading-none">TarantoServizi</h1>
-          <p class="text-[10px] text-slate-400 mt-0.5 font-medium tracking-wider">PROVINCIA DI TARANTO</p>
+          <h1 class="text-xl font-black tracking-tight leading-none bg-gradient-to-r from-white via-slate-100 to-cyan-200 bg-clip-text text-transparent">
+            TarantoServizi
+          </h1>
+          <p class="text-[10px] text-cyan-400 font-extrabold tracking-widest mt-0.5 uppercase">Provincia di Taranto</p>
         </div>
       </div>
-      <button onclick="resetRicerca()" class="text-xs text-slate-300 hover:text-white bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-700 transition flex items-center gap-1.5">
-        <i class="fa-solid fa-rotate-left text-blue-400"></i> Reset Filtri
+      
+      <button onclick="resetRicerca()" class="text-xs font-semibold text-slate-300 hover:text-white bg-white/10 hover:bg-white/20 px-3.5 py-1.5 rounded-xl border border-white/10 backdrop-blur-sm transition flex items-center gap-2 shadow-sm">
+        <i class="fa-solid fa-rotate-left text-cyan-400"></i>
+        <span class="hidden sm:inline">Azzera Filtri</span>
       </button>
     </div>
   </header>
 
-  <!-- BENVENUTO / HERO BANNER -->
-  <section class="bg-slate-900 text-white py-6 px-4 border-b border-slate-800 shadow-inner">
-    <div class="max-w-7xl mx-auto text-center space-y-1">
-      <h2 class="text-2xl md:text-3xl font-extrabold tracking-tight uppercase text-blue-400">
+  <!-- BENVENUTO / HERO COMPATTO CON SFUMATURA LUMINOSA -->
+  <section class="bg-gradient-to-b from-indigo-950 via-slate-900 to-slate-800 text-white py-6 px-4 shadow-md relative overflow-hidden">
+    <div class="absolute -right-10 -top-10 w-60 h-60 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute -left-10 -bottom-10 w-60 h-60 bg-blue-600/10 rounded-full blur-3xl pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto text-center space-y-1.5 relative z-10">
+      <h2 class="text-2xl md:text-3xl font-black tracking-tight uppercase text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-white to-sky-300">
         BENVENUTO NELLA PROVINCIA DI TARANTO
       </h2>
-      <p class="text-slate-300 text-sm md:text-base font-medium">
-        Cosa cerchi? Seleziona il comune e le categorie dal menu a sinistra.
+      <p class="text-slate-300 text-xs md:text-sm font-medium max-w-2xl mx-auto">
+        Cosa cerchi oggi? Seleziona uno o più <strong class="text-cyan-300 font-bold">Comuni</strong> e le <strong class="text-cyan-300 font-bold">Categorie</strong> dal pannello a sinistra.
       </p>
     </div>
   </section>
@@ -45,30 +52,39 @@
   <!-- CONTENITORE PRINCIPALE A 2 COLONNE -->
   <div class="max-w-7xl mx-auto px-4 py-6 flex-grow w-full grid grid-cols-1 lg:grid-cols-12 gap-6">
 
-    <!-- COLONNA SINISTRA: FILTRI -->
-    <aside class="lg:col-span-4 xl:col-span-3 space-y-5">
-      <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm space-y-5 sticky top-20">
+    <!-- COLONNA SINISTRA: PANNELLO FILTRI -->
+    <aside class="lg:col-span-4 xl:col-span-3 space-y-4">
+      <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xl shadow-slate-200/50 space-y-5 sticky top-20">
         
-        <!-- 1. SELEZIONA UNO O PIÙ COMUNI -->
+        <!-- HEADER PANNELLO -->
+        <div class="flex items-center justify-between pb-2 border-b border-slate-100">
+          <span class="text-xs font-black uppercase tracking-wider text-slate-800 flex items-center gap-2">
+            <i class="fa-solid fa-sliders text-cyan-600"></i> Filtra Ricerca
+          </span>
+          <span id="badge-totale-filtri" class="text-[10px] font-bold bg-cyan-50 text-cyan-700 px-2 py-0.5 rounded-full border border-cyan-200/60">0 attivi</span>
+        </div>
+
+        <!-- 1. SELEZIONE COMUNI -->
         <div>
           <div class="flex items-center justify-between mb-1.5">
             <label class="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
-              <span>📍</span> 1. Seleziona Comuni
+              <span>📍</span> 1. Comuni
             </label>
-            <div class="space-x-1">
-              <button onclick="selezionaTuttiComuni()" class="text-[10px] text-blue-600 hover:underline">Tutti</button>
+            <div class="space-x-1.5">
+              <button onclick="selezionaTuttiComuni()" class="text-[10px] font-bold text-cyan-600 hover:text-cyan-800">Tutti</button>
               <span class="text-slate-300">|</span>
-              <button onclick="deselezionaTuttiComuni()" class="text-[10px] text-slate-500 hover:underline">Nessuno</button>
+              <button onclick="deselezionaTuttiComuni()" class="text-[10px] font-bold text-slate-400 hover:text-slate-600">Azzera</button>
             </div>
           </div>
 
+          <!-- DROPDOWN COMUNI -->
           <div class="relative">
-            <details class="group bg-slate-50 rounded-xl border border-slate-300 text-xs">
-              <summary class="p-2.5 font-medium text-slate-700 cursor-pointer flex justify-between items-center select-none">
-                <span id="label-comuni-selezionati">Scegli uno o più comuni...</span>
-                <i class="fa-solid fa-chevron-down text-slate-400 group-open:rotate-180 transition"></i>
+            <details class="group bg-slate-50 rounded-xl border border-slate-300/80 text-xs shadow-inner">
+              <summary class="p-2.5 font-semibold text-slate-700 cursor-pointer flex justify-between items-center select-none hover:bg-slate-100 rounded-xl transition">
+                <span id="label-comuni-selezionati" class="truncate pr-2">Scegli uno o più comuni...</span>
+                <i class="fa-solid fa-chevron-down text-cyan-600 group-open:rotate-180 transition transform"></i>
               </summary>
-              <div id="container-comuni" class="p-2.5 border-t border-slate-200 max-h-48 overflow-y-auto space-y-1 bg-white rounded-b-xl">
+              <div id="container-comuni" class="p-2 border-t border-slate-200 max-h-52 overflow-y-auto space-y-0.5 bg-white rounded-b-xl">
                 <!-- Generato da JS -->
               </div>
             </details>
@@ -77,81 +93,75 @@
 
         <hr class="border-slate-100">
 
-        <!-- 2. CATEGORIE BEN DISTINTE -->
+        <!-- 2. SELEZIONE CATEGORIE -->
         <div>
           <div class="flex items-center justify-between mb-2">
             <label class="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
               <span>🏷️</span> 2. Categorie
             </label>
-            <button onclick="deselezionaTutteCategorie()" class="text-[10px] text-slate-500 hover:underline">Azzera</button>
+            <button onclick="deselezionaTutteCategorie()" class="text-[10px] font-bold text-slate-400 hover:text-slate-600">Azzera</button>
           </div>
 
-          <div id="container-gruppi-categorie" class="space-y-3">
-            <!-- Generato dinamicamente da JS per macro-gruppi -->
+          <div id="container-gruppi-categorie" class="space-y-3.5">
+            <!-- Generato dinamicamente da JS -->
           </div>
         </div>
 
-        <!-- CONTEGGIO E RIEPILOGO -->
-        <div class="pt-2 border-t border-slate-100 text-[11px] text-slate-500 flex justify-between">
-          <span id="contatore-comuni">0 comuni scelti</span>
-          <span id="contatore-categorie">0 categorie scelte</span>
+        <!-- FOOTER RIEPILOGO FILTRI -->
+        <div class="pt-3 border-t border-slate-100 text-[11px] font-medium text-slate-500 flex justify-between items-center bg-slate-50/50 p-2.5 rounded-xl border border-slate-100">
+          <span id="contatore-comuni" class="text-cyan-700 font-bold">0 comuni</span>
+          <span id="contatore-categorie" class="text-cyan-700 font-bold">0 categorie</span>
         </div>
 
       </div>
     </aside>
 
-    <!-- COLONNA DESTRA: BANNER PUBBLICITARI E RISULTATI -->
+    <!-- COLONNA DESTRA: PUBBLICITÀ E RISULTATI -->
     <main class="lg:col-span-8 xl:col-span-9 space-y-6">
 
-      <!-- BANNER PROMOZIONALE: XX GIOCHI DEL MEDITERRANEO TARANTO 2026 -->
-      <div class="w-full bg-gradient-to-r from-slate-900 via-blue-950 to-cyan-950 text-white border-2 border-cyan-500/40 rounded-2xl p-5 md:p-6 shadow-xl relative overflow-hidden">
-        <div class="absolute -right-12 -bottom-12 w-48 h-48 bg-cyan-500/20 rounded-full blur-3xl pointer-events-none"></div>
-        <div class="absolute -left-12 -top-12 w-48 h-48 bg-blue-500/20 rounded-full blur-3xl pointer-events-none"></div>
-
-        <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-5">
-          <div class="space-y-2 text-center md:text-left">
-            <div class="inline-flex items-center gap-2 bg-cyan-500/20 border border-cyan-400/30 text-cyan-300 px-3 py-0.5 rounded-full text-[11px] font-extrabold tracking-widest uppercase">
-              <span>🏆 TARANTO 2026</span>
-              <span>•</span>
-              <span>EVENTO SPECIALE</span>
-            </div>
-            
-            <h3 class="text-2xl md:text-3xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white via-cyan-100 to-cyan-300">
-              XX GIOCHI DEL MEDITERRANEO
-            </h3>
-            
-            <p class="text-xs md:text-sm text-slate-300 max-w-xl font-medium leading-relaxed">
-              Scopri le strutture sportive, i servizi di accoglienza e le informazioni per vivere da protagonista il grande evento della Provincia di Taranto.
-            </p>
-          </div>
-
-          <div class="flex flex-col sm:flex-row md:flex-col items-center gap-2 shrink-0 w-full md:w-auto">
-            <a href="#" class="w-full sm:w-auto text-center text-xs md:text-sm font-bold text-slate-950 bg-gradient-to-r from-cyan-400 to-teal-300 hover:from-cyan-300 hover:to-teal-200 px-5 py-2.5 rounded-xl shadow-lg transition transform hover:-translate-y-0.5 flex items-center justify-center gap-2">
-              <i class="fa-solid fa-trophy"></i> Guida all'Evento
-            </a>
-            <span class="text-[10px] text-cyan-300/70 font-mono tracking-wider uppercase">#Taranto2026</span>
-          </div>
+      <!-- BANNER PUBBLICITARIO SUPERIORE -->
+      <div class="w-full bg-gradient-to-r from-amber-500/10 via-amber-400/5 to-orange-500/10 border border-amber-300/80 rounded-2xl p-4 text-amber-900 shadow-sm flex flex-col md:flex-row items-center justify-between gap-3 relative overflow-hidden">
+        <div class="flex items-center gap-3">
+          <span class="bg-amber-500 text-white text-[10px] font-black px-2.5 py-1 rounded-lg uppercase tracking-wider shadow-sm shrink-0">SPONSOR</span>
+          <p class="text-xs md:text-sm font-bold text-slate-800">
+            Spazio Riservato ai Banner Pubblicitari e Promozioni Aziendali
+          </p>
         </div>
+        <button class="text-xs font-bold bg-amber-500 hover:bg-amber-600 text-white px-4 py-2 rounded-xl transition shadow-md shrink-0 cursor-pointer">
+          Promuovi la tua attività
+        </button>
       </div>
 
-      <!-- ZONA VISUALIZZAZIONE RICERCHE -->
+      <!-- ZONA RISULTATI -->
       <section>
-        <div class="flex items-center justify-between mb-4">
-          <h3 class="text-base font-bold text-slate-800">Risultati della ricerca</h3>
-          <span id="totale-risultati" class="text-xs font-medium text-slate-500">Seleziona i filtri a sinistra</span>
+        <div class="flex items-center justify-between mb-3 px-1">
+          <h3 class="text-base font-black text-slate-900 flex items-center gap-2">
+            <i class="fa-solid fa-list-check text-cyan-600"></i> Risultati della ricerca
+          </h3>
+          <span id="totale-risultati" class="text-xs font-bold text-slate-500 bg-white px-2.5 py-1 rounded-lg border border-slate-200">
+            In attesa di filtri
+          </span>
         </div>
 
         <div id="risultati" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-          <div class="col-span-full bg-white rounded-2xl border border-slate-200 p-8 text-center text-slate-500">
-            <i class="fa-solid fa-arrow-left text-blue-500 text-2xl mb-2"></i>
-            <p class="text-sm font-medium">Usa il menu a sinistra per selezionare i **Comuni** e le **Categorie** di tuo interesse.</p>
+          <div class="col-span-full bg-white rounded-2xl border border-slate-200/80 p-10 text-center text-slate-500 shadow-sm space-y-3">
+            <div class="w-14 h-14 bg-cyan-50 text-cyan-600 rounded-2xl flex items-center justify-center mx-auto text-2xl shadow-inner">
+              <i class="fa-solid fa-hand-pointer"></i>
+            </div>
+            <div>
+              <h4 class="text-slate-800 font-bold text-base">Inizia la ricerca</h4>
+              <p class="text-xs text-slate-500 max-w-sm mx-auto mt-1">
+                Seleziona i **Comuni** e le **Categorie** dal menu a sinistra per visualizzare le schede informative dei servizi.
+              </p>
+            </div>
           </div>
         </div>
       </section>
 
-      <!-- SPORTELLO PUBBLICITARIO INFERIORE -->
-      <div class="w-full bg-slate-200 border-2 border-dashed border-slate-300 rounded-2xl p-6 text-center text-slate-500">
-        <p class="text-xs font-bold uppercase tracking-wider">Spazio Riservato a Banner Pubblicitari e Sponsor Locali</p>
+      <!-- BANNER PUBBLICITARIO INFERIORE -->
+      <div class="w-full bg-gradient-to-r from-slate-100 via-slate-200/70 to-slate-100 border-2 border-dashed border-slate-300 rounded-2xl p-6 text-center text-slate-500 shadow-inner">
+        <i class="fa-solid fa-rectangle-ad text-slate-400 text-2xl mb-1"></i>
+        <p class="text-xs font-extrabold uppercase tracking-widest text-slate-600">Banner Pubblicitario 728x90 / Spazio Promozionale</p>
       </div>
 
     </main>
@@ -176,8 +186,8 @@
 
     const MACRO_GRUPPI = [
       {
-        titolo: "🚨 Emergenze & Salute",
-        badgeColor: "text-red-700 bg-red-50 border-red-200",
+        titolo: "🚨 EMERGENZE & SALUTE",
+        badgeColor: "text-red-800 bg-red-100/80 border-red-200",
         categorie: [
           { nome: "Pronto intervento", icona: "🚨" },
           { nome: "Farmacie", icona: "💊" },
@@ -187,16 +197,16 @@
         ]
       },
       {
-        titolo: "🍽️ Mangiare & Ristorazione",
-        badgeColor: "text-amber-700 bg-amber-50 border-amber-200",
+        titolo: "🍽️ MANGIARE & RISTORAZIONE",
+        badgeColor: "text-amber-800 bg-amber-100/80 border-amber-200",
         categorie: [
           { nome: "Mangiare", icona: "🍽️" },
           { nome: "Servizi Catering", icona: "🍱" }
         ]
       },
       {
-        titolo: "🍿 Divertimento, Benessere & Svago",
-        badgeColor: "text-purple-700 bg-purple-50 border-purple-200",
+        titolo: "🍿 DIVERTIMENTO & SVAGO",
+        badgeColor: "text-purple-800 bg-purple-100/80 border-purple-200",
         categorie: [
           { nome: "Cinema", icona: "🎬" },
           { nome: "Teatri", icona: "🎭" },
@@ -207,8 +217,8 @@
         ]
       },
       {
-        titolo: "🏛️ Servizi & Utilità",
-        badgeColor: "text-blue-700 bg-blue-50 border-blue-200",
+        titolo: "🏛️ SERVIZI & UTILITÀ",
+        badgeColor: "text-blue-800 bg-blue-100/80 border-blue-200",
         categorie: [
           { nome: "Servizi", icona: "🏛️" },
           { nome: "Uffici Postali", icona: "🏣" },
@@ -219,8 +229,8 @@
         ]
       },
       {
-        titolo: "⛪ Altri Servizi",
-        badgeColor: "text-slate-700 bg-slate-100 border-slate-200",
+        titolo: "⛪ ALTRI SERVIZI",
+        badgeColor: "text-slate-800 bg-slate-200/80 border-slate-300",
         categorie: [
           { nome: "Luoghi di Culto", icona: "⛪" },
           { nome: "Onoranze Funebri", icona: "🕊️" }
@@ -233,27 +243,27 @@
 
     function getStileCategoria(cat) {
       const stili = {
-        'Pronto intervento':    { cardBg: 'bg-red-50/70',     border: 'border-red-200',     badge: 'bg-red-100 text-red-800' },
-        'Farmacie':            { cardBg: 'bg-emerald-50/70', border: 'border-emerald-200', badge: 'bg-emerald-100 text-emerald-800' },
-        'Servizi Sanitari':    { cardBg: 'bg-teal-50/70',    border: 'border-teal-200',    badge: 'bg-teal-100 text-teal-800' },
-        'Medici Specialisti':  { cardBg: 'bg-cyan-50/70',    border: 'border-cyan-200',    badge: 'bg-cyan-100 text-cyan-800' },
-        'Servizi':             { cardBg: 'bg-blue-50/70',    border: 'border-blue-200',    badge: 'bg-blue-100 text-blue-800' },
-        'Uffici Postali':      { cardBg: 'bg-yellow-50/70',  border: 'border-yellow-200',  badge: 'bg-yellow-100 text-yellow-800' },
-        'Banche':              { cardBg: 'bg-indigo-50/70',  border: 'border-indigo-200',  badge: 'bg-indigo-100 text-indigo-800' },
-        'Servizio Spedizioni': { cardBg: 'bg-orange-50/70',  border: 'border-orange-200',  badge: 'bg-orange-100 text-orange-800' },
-        'Auto e Meccanici':   { cardBg: 'bg-slate-100/70',   border: 'border-slate-300',   badge: 'bg-slate-200 text-slate-800' },
-        'Veterinari':          { cardBg: 'bg-lime-50/70',     border: 'border-lime-200',    badge: 'bg-lime-100 text-lime-800' },
-        'Animali e Pet Care':  { cardBg: 'bg-green-50/70',    border: 'border-green-200',   badge: 'bg-green-100 text-green-800' },
-        'Mangiare':            { cardBg: 'bg-amber-50/70',    border: 'border-amber-200',   badge: 'bg-amber-100 text-amber-800' },
-        'Hotel e B&B':         { cardBg: 'bg-purple-50/70',   border: 'border-purple-200',  badge: 'bg-purple-100 text-purple-800' },
+        'Pronto intervento':    { cardBg: 'bg-red-50/60',     border: 'border-red-200',     badge: 'bg-red-100 text-red-800' },
+        'Farmacie':            { cardBg: 'bg-emerald-50/60', border: 'border-emerald-200', badge: 'bg-emerald-100 text-emerald-800' },
+        'Servizi Sanitari':    { cardBg: 'bg-teal-50/60',    border: 'border-teal-200',    badge: 'bg-teal-100 text-teal-800' },
+        'Medici Specialisti':  { cardBg: 'bg-cyan-50/60',    border: 'border-cyan-200',    badge: 'bg-cyan-100 text-cyan-800' },
+        'Servizi':             { cardBg: 'bg-blue-50/60',    border: 'border-blue-200',    badge: 'bg-blue-100 text-blue-800' },
+        'Uffici Postali':      { cardBg: 'bg-yellow-50/60',  border: 'border-yellow-200',  badge: 'bg-yellow-100 text-yellow-800' },
+        'Banche':              { cardBg: 'bg-indigo-50/60',  border: 'border-indigo-200',  badge: 'bg-indigo-100 text-indigo-800' },
+        'Servizio Spedizioni': { cardBg: 'bg-orange-50/60',  border: 'border-orange-200',  badge: 'bg-orange-100 text-orange-800' },
+        'Auto e Meccanici':   { cardBg: 'bg-slate-100/60',   border: 'border-slate-300',   badge: 'bg-slate-200 text-slate-800' },
+        'Veterinari':          { cardBg: 'bg-lime-50/60',     border: 'border-lime-200',    badge: 'bg-lime-100 text-lime-800' },
+        'Animali e Pet Care':  { cardBg: 'bg-green-50/60',    border: 'border-green-200',   badge: 'bg-green-100 text-green-800' },
+        'Mangiare':            { cardBg: 'bg-amber-50/60',    border: 'border-amber-200',   badge: 'bg-amber-100 text-amber-800' },
+        'Hotel e B&B':         { cardBg: 'bg-purple-50/60',   border: 'border-purple-200',  badge: 'bg-purple-100 text-purple-800' },
         'Servizi Catering':    { cardBg: 'bg-yellow-100/50', border: 'border-yellow-300',  badge: 'bg-yellow-200 text-yellow-900' },
-        'Shopping':            { cardBg: 'bg-pink-50/70',     border: 'border-pink-200',    badge: 'bg-pink-100 text-pink-800' },
-        'Onoranze Funebri':    { cardBg: 'bg-stone-100/70',   border: 'border-stone-300',   badge: 'bg-stone-200 text-stone-800' },
-        'Sport':               { cardBg: 'bg-sky-50/70',      border: 'border-sky-200',     badge: 'bg-sky-100 text-sky-800' },
-        'Luoghi di Culto':     { cardBg: 'bg-amber-50/50',    border: 'border-amber-200',   badge: 'bg-amber-100 text-amber-800' },
-        'Teatri':              { cardBg: 'bg-fuchsia-50/70',  border: 'border-fuchsia-200', badge: 'bg-fuchsia-100 text-fuchsia-800' },
-        'Cinema':              { cardBg: 'bg-violet-50/70',   border: 'border-violet-200',  badge: 'bg-violet-100 text-violet-800' },
-        'Dance':               { cardBg: 'bg-rose-50/70',     border: 'border-rose-200',    badge: 'bg-rose-100 text-rose-800' }
+        'Shopping':            { cardBg: 'bg-pink-50/60',     border: 'border-pink-200',    badge: 'bg-pink-100 text-pink-800' },
+        'Onoranze Funebri':    { cardBg: 'bg-stone-100/60',   border: 'border-stone-300',   badge: 'bg-stone-200 text-stone-800' },
+        'Sport':               { cardBg: 'bg-sky-50/60',      border: 'border-sky-200',     badge: 'bg-sky-100 text-sky-800' },
+        'Luoghi di Culto':     { cardBg: 'bg-amber-50/40',    border: 'border-amber-200',   badge: 'bg-amber-100 text-amber-800' },
+        'Teatri':              { cardBg: 'bg-fuchsia-50/60',  border: 'border-fuchsia-200', badge: 'bg-fuchsia-100 text-fuchsia-800' },
+        'Cinema':              { cardBg: 'bg-violet-50/60',   border: 'border-violet-200',  badge: 'bg-violet-100 text-violet-800' },
+        'Dance':               { cardBg: 'bg-rose-50/60',     border: 'border-rose-200',    badge: 'bg-rose-100 text-rose-800' }
       };
 
       return stili[cat] || { cardBg: 'bg-white', border: 'border-slate-200', badge: 'bg-blue-50 text-blue-700' };
@@ -279,8 +289,8 @@
       container.innerHTML = COMUNI_LISTA.map(comune => {
         const isChecked = comuniSelezionati.has(comune);
         return `
-          <label class="flex items-center gap-2 px-2 py-1 rounded hover:bg-slate-100 cursor-pointer text-xs">
-            <input type="checkbox" ${isChecked ? 'checked' : ''} onchange="toggleComune('${comune}')" class="rounded text-blue-600 focus:ring-blue-500">
+          <label class="flex items-center gap-2 px-2.5 py-1.5 rounded-lg hover:bg-slate-100 cursor-pointer text-xs font-medium text-slate-700 transition">
+            <input type="checkbox" ${isChecked ? 'checked' : ''} onchange="toggleComune('${comune}')" class="rounded border-slate-300 text-cyan-600 focus:ring-cyan-500 w-3.5 h-3.5">
             <span>${comune}</span>
           </label>
         `;
@@ -291,7 +301,8 @@
       else if (comuniSelezionati.size === 1) label.innerText = Array.from(comuniSelezionati)[0];
       else label.innerText = `${comuniSelezionati.size} Comuni selezionati`;
 
-      document.getElementById('contatore-comuni').innerText = `${comuniSelezionati.size} comuni scelti`;
+      document.getElementById('contatore-comuni').innerText = `${comuniSelezionati.size} comuni`;
+      aggiornaBadgeTotaleFiltri();
     }
 
     function renderPulsantiCategorie() {
@@ -301,11 +312,11 @@
         const bottoni = gruppo.categorie.map(cat => {
           const isSelected = categorieSelezionate.has(cat.nome);
           const activeClasses = isSelected 
-            ? 'bg-blue-600 text-white border-blue-600 font-bold shadow-sm' 
-            : 'bg-slate-100 text-slate-700 border-slate-200 hover:bg-slate-200';
+            ? 'bg-gradient-to-r from-cyan-600 to-blue-600 text-white border-blue-600 font-bold shadow-md scale-[1.02]' 
+            : 'bg-slate-100/80 text-slate-700 border-slate-200/80 hover:bg-slate-200/80';
           
           return `
-            <button onclick="toggleCategoria('${cat.nome}')" class="px-2 py-1 rounded-lg text-xs border transition flex items-center gap-1 text-left ${activeClasses}">
+            <button onclick="toggleCategoria('${cat.nome}')" class="px-2.5 py-1 rounded-xl text-xs border transition transform flex items-center gap-1.5 text-left ${activeClasses}">
               <span>${cat.icona}</span>
               <span>${cat.nome}</span>
             </button>
@@ -314,7 +325,7 @@
 
         return `
           <div class="space-y-1.5">
-            <span class="text-[10px] font-bold tracking-wider px-2 py-0.5 rounded border ${gruppo.badgeColor} uppercase block">
+            <span class="text-[9px] font-black tracking-wider px-2 py-0.5 rounded-md border ${gruppo.badgeColor} uppercase block">
               ${gruppo.titolo}
             </span>
             <div class="flex flex-wrap gap-1">
@@ -324,7 +335,13 @@
         `;
       }).join('');
 
-      document.getElementById('contatore-categorie').innerText = `${categorieSelezionate.size} categorie scelte`;
+      document.getElementById('contatore-categorie').innerText = `${categorieSelezionate.size} categorie`;
+      aggiornaBadgeTotaleFiltri();
+    }
+
+    function aggiornaBadgeTotaleFiltri() {
+      const totale = comuniSelezionati.size + categorieSelezionate.size;
+      document.getElementById('badge-totale-filtri').innerText = `${totale} attivi`;
     }
 
     function toggleComune(nomeComune) {
@@ -373,10 +390,16 @@
 
       if (comuniSelezionati.size === 0 || categorieSelezionate.size === 0) {
         risultatiDiv.innerHTML = `
-          <div class="col-span-full bg-white rounded-2xl border border-slate-200 p-8 text-center text-slate-500">
-            <p class="text-sm font-medium">Seleziona almeno un **Comune** e una **Categoria** dal menu a sinistra per visualizzare le schede.</p>
+          <div class="col-span-full bg-white rounded-2xl border border-slate-200/80 p-10 text-center text-slate-500 shadow-sm space-y-3">
+            <div class="w-14 h-14 bg-cyan-50 text-cyan-600 rounded-2xl flex items-center justify-center mx-auto text-2xl shadow-inner">
+              <i class="fa-solid fa-filter"></i>
+            </div>
+            <div>
+              <h4 class="text-slate-800 font-bold text-base">Filtri incompleti</h4>
+              <p class="text-xs text-slate-500 max-w-sm mx-auto mt-1">Seleziona almeno un **Comune** e una **Categoria** dal menu a sinistra per visualizzare le schede.</p>
+            </div>
           </div>`;
-        totaleSpan.innerText = "Filtri incompleti";
+        totaleSpan.innerText = "In attesa di filtri";
         return;
       }
 
@@ -394,15 +417,16 @@
 
       if (error) {
         console.error('Errore Supabase:', error);
-        risultatiDiv.innerHTML = `<p class="text-center text-red-500 col-span-full py-8">Errore nel caricamento: ${error.message}</p>`;
+        risultatiDiv.innerHTML = `<p class="text-center text-red-500 col-span-full py-8 font-semibold">Errore nel caricamento: ${error.message}</p>`;
         totaleSpan.innerText = "Errore";
         return;
       }
 
       if (!risorse || risorse.length === 0) {
         risultatiDiv.innerHTML = `
-          <div class="col-span-full bg-white rounded-2xl border border-slate-200 p-8 text-center text-slate-500">
-            <p class="text-sm font-medium">Nessuna attività o servizio trovato per i filtri selezionati.</p>
+          <div class="col-span-full bg-white rounded-2xl border border-slate-200/80 p-10 text-center text-slate-500 shadow-sm">
+            <p class="text-sm font-bold text-slate-700">Nessuna attività o servizio trovato per i filtri selezionati.</p>
+            <p class="text-xs text-slate-400 mt-1">Prova ad ampliare la selezione dei comuni o delle categorie.</p>
           </div>`;
         totaleSpan.innerText = "0 risultati";
         return;
@@ -417,29 +441,29 @@
         const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${queryMappa}`;
 
         return `
-          <div class="${stile.cardBg} ${stile.border} rounded-xl shadow-sm border p-4 hover:shadow-md transition flex flex-col justify-between">
+          <div class="${stile.cardBg} ${stile.border} rounded-2xl shadow-sm border p-4 hover:shadow-md transition flex flex-col justify-between">
             <div>
               <div class="flex items-center justify-between gap-2 mb-2">
-                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${stile.badge} uppercase tracking-wider">${r.categoria}</span>
-                <span class="text-[11px] text-slate-700 font-bold bg-white/80 px-2 py-0.5 rounded border border-slate-200"><i class="fa-solid fa-city mr-1 text-slate-400"></i>${r.comune}</span>
+                <span class="text-[9px] font-black px-2.5 py-0.5 rounded-full ${stile.badge} uppercase tracking-wider">${r.categoria}</span>
+                <span class="text-[11px] text-slate-700 font-bold bg-white/90 px-2 py-0.5 rounded-md border border-slate-200 shadow-xs"><i class="fa-solid fa-city mr-1 text-cyan-600"></i>${r.comune}</span>
               </div>
 
-              <h3 class="text-base font-bold text-slate-900 mt-1">${r.nome}</h3>
+              <h3 class="text-base font-extrabold text-slate-900 mt-1 leading-snug">${r.nome}</h3>
               
-              <div class="text-xs text-slate-700 mt-2 flex items-start gap-1.5">
+              <div class="text-xs text-slate-700 mt-2.5 flex items-start gap-1.5">
                 <i class="fa-solid fa-location-dot ${haMappa ? 'text-red-500' : 'text-slate-400'} text-sm mt-0.5 shrink-0"></i>
                 <span class="font-medium">${r.indirizzo || 'Indirizzo non specificato'}</span>
               </div>
             </div>
 
-            <div class="mt-3 pt-2.5 border-t border-slate-900/10 flex items-center justify-between gap-2">
+            <div class="mt-4 pt-2.5 border-t border-slate-900/10 flex items-center justify-between gap-2">
               ${r.telefono ? `
-                <a href="tel:${r.telefono.replace(/\s+/g, '')}" class="text-xs font-semibold text-blue-700 bg-white hover:bg-slate-50 border border-blue-200 px-2.5 py-1.5 rounded-lg transition inline-flex items-center gap-1 shadow-sm">
-                  <i class="fa-solid fa-phone text-blue-600"></i> ${r.telefono}
+                <a href="tel:${r.telefono.replace(/\s+/g, '')}" class="text-xs font-bold text-cyan-700 bg-white hover:bg-cyan-50 border border-cyan-200/80 px-3 py-1.5 rounded-xl transition inline-flex items-center gap-1.5 shadow-xs">
+                  <i class="fa-solid fa-phone text-cyan-600"></i> ${r.telefono}
                 </a>` : '<div></div>'}
               
               ${haMappa ? `
-                <a href="${googleMapsUrl}" target="_blank" rel="noopener noreferrer" class="text-xs font-semibold text-slate-800 bg-white hover:bg-slate-50 border border-slate-300 px-2.5 py-1.5 rounded-lg transition inline-flex items-center gap-1 shadow-sm">
+                <a href="${googleMapsUrl}" target="_blank" rel="noopener noreferrer" class="text-xs font-bold text-slate-800 bg-white hover:bg-slate-50 border border-slate-300/80 px-3 py-1.5 rounded-xl transition inline-flex items-center gap-1.5 shadow-xs">
                   <i class="fa-solid fa-map-location-dot text-red-500"></i> Mappa
                 </a>` : ''}
             </div>
