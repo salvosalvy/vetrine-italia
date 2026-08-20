@@ -150,6 +150,27 @@
       return stili[cat] || { cardBg: 'bg-white', border: 'border-slate-200', badge: 'bg-blue-50 text-blue-700' };
     }
 
+    // CONTROLLO SE DEVE MOSTRARE IL PULSANTE MAPPA
+    function deveMostrareMappa(r) {
+      if (!r.indirizzo || r.indirizzo.trim() === '' || r.indirizzo.toLowerCase().includes('non specificato')) {
+        return false;
+      }
+      
+      const tel = r.telefono ? r.telefono.replace(/\s+/g, '') : '';
+      
+      // Se è un numero breve (es. 112, 113, 115, 118, 1522, 1515, ecc.), niente mappa!
+      if (tel.length <= 4 || ['112', '113', '114', '115', '117', '118', '1515', '1522', '1530', '1500', '116000'].includes(tel)) {
+        return false;
+      }
+
+      const nomeLower = r.nome.toLowerCase();
+      if (nomeLower.includes('numero unico') || nomeLower.includes('emergenza') || nomeLower.includes('nazionale')) {
+        return false;
+      }
+
+      return true;
+    }
+
     document.addEventListener('DOMContentLoaded', async () => {
       supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
       await caricaRisorse();
@@ -184,10 +205,9 @@
       }
 
       risultatiDiv.innerHTML = risorse.map(r => {
-        // Recupera gli stili pastello specifici per questa categoria
         const stile = getStileCategoria(r.categoria);
+        const haMappa = deveMostrareMappa(r);
 
-        // Genera il link a Google Maps
         const queryMappa = encodeURIComponent(`${r.nome}, ${r.indirizzo || ''}, ${r.comune} TA`);
         const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${queryMappa}`;
 
@@ -201,9 +221,9 @@
 
               <h3 class="text-lg font-bold text-slate-900 mt-1">${r.nome}</h3>
               
-              <!-- INDIRIZZO CON ICONA POSIZIONE ROSSA -->
+              <!-- INDIRIZZO CON ICONA POSIZIONE ROSSA (Solo se c'è un indirizzo valido) -->
               <div class="text-sm text-slate-700 mt-3 flex items-start gap-2">
-                <i class="fa-solid fa-location-dot text-red-500 text-lg mt-0.5 shrink-0"></i>
+                <i class="fa-solid fa-location-dot ${haMappa ? 'text-red-500' : 'text-slate-400'} text-lg mt-0.5 shrink-0"></i>
                 <span class="font-medium">${r.indirizzo || 'Indirizzo non specificato'}</span>
               </div>
             </div>
@@ -215,10 +235,11 @@
                   <i class="fa-solid fa-phone text-blue-600"></i> ${r.telefono}
                 </a>` : '<div></div>'}
               
-              <!-- BOTTONE POSIZIONE MAPPA -->
-              <a href="${googleMapsUrl}" target="_blank" rel="noopener noreferrer" class="text-xs font-semibold text-slate-800 bg-white/80 hover:bg-white border border-slate-300 px-3 py-2 rounded-lg transition inline-flex items-center gap-1.5 shadow-sm">
-                <i class="fa-solid fa-map-location-dot text-red-500"></i> Mappa
-              </a>
+              <!-- BOTTONE POSIZIONE MAPPA (Visibile SOLO se non è un numero unico/emergenza) -->
+              ${haMappa ? `
+                <a href="${googleMapsUrl}" target="_blank" rel="noopener noreferrer" class="text-xs font-semibold text-slate-800 bg-white/80 hover:bg-white border border-slate-300 px-3 py-2 rounded-lg transition inline-flex items-center gap-1.5 shadow-sm">
+                  <i class="fa-solid fa-map-location-dot text-red-500"></i> Mappa
+                </a>` : ''}
             </div>
           </div>
         `;
