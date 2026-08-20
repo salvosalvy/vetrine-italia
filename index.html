@@ -117,11 +117,20 @@
         return;
       }
 
-      // 2. CHIAMATA A SUPABASE CON ORDINAMENTO ALFABETICO
+      // 2. CHIAMATA A SUPABASE
       let query = supabaseClient.from('risorse_locali').select('*');
 
-      if (comune) query = query.eq('comune', comune);
-      if (categoria) query = query.eq('categoria', categoria);
+      if (comune) {
+        query = query.eq('comune', comune);
+      }
+
+      // SE L'UTENTE HA SCELTO UNA CATEGORIA: mostra solo quella categoria.
+      // SE L'UTENTE HA LASCIATO "Tutte le Categorie": mostra tutto TRANNE i Luoghi di Culto.
+      if (categoria) {
+        query = query.eq('categoria', categoria);
+      } else {
+        query = query.neq('categoria', 'Luoghi di Culto');
+      }
 
       query = query.order('comune', { ascending: true }).order('nome', { ascending: true });
 
